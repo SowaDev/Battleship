@@ -5,6 +5,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class BattleshipController {
     private Battleship battleship;
@@ -85,8 +88,13 @@ public class BattleshipController {
 
     public void handleGameOver(String whoWins){
         if(!whoWins.equals("No over")) {
-            System.out.println(whoWins);
-            System.exit(0);
+            AlertBox prompt = new AlertBox();
+            Stage stage = (Stage) playersGrid.getScene().getWindow();
+            try {
+                prompt.playAgainOrExit(whoWins, stage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
