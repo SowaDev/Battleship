@@ -128,53 +128,19 @@ public class Battleship {
             lastHits.add(new int[]{x, y});
             hitTheShip(shotResult, playersFleet);
         }
-//        System.out.println("Last hits");
-//        for(int[] hit : lastHits)
-//            System.out.println(hit[0] + " " + hit[1]);
         return new int[]{x, y};
     }
 
     //Makes computer sink the ship after it makes a first hit
     private int[] hunt() {
         Random rand = new Random();
-        int x, y;
         int [] result;
-        x = lastHits.get(0)[0];
-        y = lastHits.get(0)[1];
-        if(lastHits.size() == 1) {
-            addIfViable(x - 1, y);
-            addIfViable(x + 1, y);
-            addIfViable(x, y - 1);
-            addIfViable(x, y + 1);
-            int random = rand.nextInt(possibleShots.size());
-            result = possibleShots.get(random);
-            System.out.println("HERE");
-        } else {
-            boolean isVertical = lastHits.get(0)[1] == lastHits.get(1)[1];
-            if(isVertical){
-                int min = x, max = x;
-                for(int[] hit : lastHits){
-                    if(min > hit[0])
-                        min = hit[0];
-                    if(max < hit[0])
-                        max = hit[0];
-                }
-                addIfViable(min - 1, y);
-                addIfViable(max + 1, y);
-            } else {
-                int min = y, max = y;
-                for(int[] hit : lastHits){
-                    if(min > hit[1])
-                        min = hit[1];
-                    if(max < hit[1])
-                        max = hit[1];
-                }
-                addIfViable(x, min - 1);
-                addIfViable(x, max + 1);
-            }
-            int random = rand.nextInt(possibleShots.size());
-            result = possibleShots.get(random);
-        }
+        if(lastHits.size() == 1)
+            shotAround();
+        else
+            shotOnTheSides();
+        int random = rand.nextInt(possibleShots.size());
+        result = possibleShots.get(random);
         possibleShots.clear();
         return result;
     }
@@ -189,22 +155,69 @@ public class Battleship {
         }
     }
 
+    //Shot around the square to find 2nd hit
+    public void shotAround(){
+        int x = lastHits.get(0)[0], y = lastHits.get(0)[1];
+        addIfViable(x - 1, y);
+        addIfViable(x + 1, y);
+        addIfViable(x, y - 1);
+        addIfViable(x, y + 1);
+    }
+
+    //Shot on the sides until ship sinks
+    public void shotOnTheSides(){
+        int x = lastHits.get(0)[0], y = lastHits.get(0)[1];
+        boolean isVertical = lastHits.get(0)[1] == lastHits.get(1)[1];
+        if(isVertical){
+            int min = verticalMinMax(x)[0], max = verticalMinMax(x)[1];
+            addIfViable(min - 1, y);
+            addIfViable(max + 1, y);
+        } else {
+            int min = horizontalMinMax(y)[0], max = horizontalMinMax(y)[1];
+            addIfViable(x, min - 1);
+            addIfViable(x, max + 1);
+        }
+    }
+
+
+    public int[] verticalMinMax(int x){
+        int min = x, max = x;
+        for(int[] hit : lastHits){
+            if(min > hit[0])
+                min = hit[0];
+            if(max < hit[0])
+                max = hit[0];
+        }
+        return new int[]{min, max};
+    }
+
+    public int[] horizontalMinMax(int y){
+        int min = y, max = y;
+        for(int[] hit : lastHits){
+            if(min > hit[1])
+                min = hit[1];
+            if(max < hit[1])
+                max = hit[1];
+        }
+        return new int[]{min, max};
+    }
+
 
     public String checkIfGameIsOver(){
-        int playerCounter = 0, opponentsCounter = 0;
-        for(int i = 0; i < playersFleet.size(); i++){
-            if(playersFleet.get(i).isDestroyed)
-                playerCounter++;
-            if(opponentsFleet.get(i).isDestroyed)
-                opponentsCounter++;
-        }
-        if(playerCounter == 5) {
+        if(isFleetDestroyed(playersFleet))
             return "Computer wins";
-        }
-        else if(opponentsCounter == 5)
+        if(isFleetDestroyed(opponentsFleet))
             return "You win";
-        else
-            return "No over";
+        return "No over";
+    }
+
+    public boolean isFleetDestroyed(ArrayList<Ship> fleet){
+        int counter = 0;
+        for(Ship ship : fleet){
+            if(ship.isDestroyed)
+                counter++;
+        }
+        return counter == 5;
     }
 
     public void hitTheShip(char shotResult, ArrayList<Ship> fleet) {
