@@ -14,7 +14,6 @@ public class BattleshipController {
     private final int playersGridSize = 30;
     private final int shootingGridSize = 39;
     private Label[][] pSquares;
-    private Label[][] oSquares;
     @FXML
     private GridPane shotGrid;
     @FXML
@@ -36,7 +35,7 @@ public class BattleshipController {
 
     public void prepare(){
         pSquares = new Label[10][10];
-        oSquares = new Label[10][10];
+        Label[][] oSquares = new Label[10][10];
         fillGrid(playersGrid, pSquares, battleship.getPlayersGrid(), playersGridSize);
         fillGrid(shotGrid, oSquares, battleship.getOpponentsGrid(), shootingGridSize);
     }
@@ -47,7 +46,7 @@ public class BattleshipController {
                 squares[i][j] = new Label();
                 Label square = squares[i][j];
                 char field = grid.getBattlemap()[i][j];
-                if(field == 'C' || field == 'B' || field == 'R' || field == 'D' || field == 'S')
+                if((field == 'C' || field == 'B' || field == 'R' || field == 'D' || field == 'S') && gridpane.equals(playersGrid))
                     square.setStyle("-fx-background-color: black");
                 else
                     square.setStyle("-fx-background-color: gray");
