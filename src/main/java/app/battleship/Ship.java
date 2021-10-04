@@ -8,12 +8,21 @@ public class Ship {
     private boolean isSetSail;
     private boolean isVertical;
     public boolean isDestroyed;
+    public boolean opponent;
 
     public Ship(String name, int length, char symbol) {
         this.name = name;
         this.length = length;
         this.life = length;
         this.symbol = symbol;
+    }
+
+    public Ship(String name, int length, char symbol, boolean opponent) {
+        this.name = name;
+        this.length = length;
+        this.life = length;
+        this.symbol = symbol;
+        this.opponent = opponent;
     }
 
     public boolean isSetSail() {
@@ -53,6 +62,10 @@ public class Ship {
         this.life = life - 1;
         if(this.life == 0) {
             this.isDestroyed = true;
+            if(opponent)
+                System.out.println("Enemy " + this.name + " has been sunk");
+            else
+                System.out.println("Your " + this.name + " has been sunk");
         }
     }
 }

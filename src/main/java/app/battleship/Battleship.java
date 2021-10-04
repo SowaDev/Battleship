@@ -15,7 +15,7 @@ public class Battleship {
 
     Battleship() {
         playersFleet = new ArrayList<Ship>();
-        addShipsToTheFleet(playersFleet);
+        addShipsToTheFleet(playersFleet, false);
         playersGrid = new Grid();
     }
 
@@ -50,18 +50,18 @@ public class Battleship {
     public void prepareTheGameWithComputer(){
         opponentsFleet = new ArrayList<Ship>();
         opponentsGrid = new Grid();
-        addShipsToTheFleet(opponentsFleet);
+        addShipsToTheFleet(opponentsFleet, true);
         putShipsAtRandom(opponentsFleet, opponentsGrid);
         lastHits = new ArrayList<>();
         possibleShots = new ArrayList<>();
     }
 
-    public void addShipsToTheFleet(ArrayList<Ship> fleet){
-        fleet.add(new Ship("Carrier", 5, 'C'));
-        fleet.add(new Ship("Battleship", 4, 'B'));
-        fleet.add(new Ship("Cruiser", 3, 'R'));
-        fleet.add(new Ship("Destroyer", 2, 'D'));
-        fleet.add(new Ship("Submarine", 2, 'S'));
+    public void addShipsToTheFleet(ArrayList<Ship> fleet, boolean opponent){
+        fleet.add(new Ship("Carrier", 5, 'C', opponent));
+        fleet.add(new Ship("Battleship", 4, 'B', opponent));
+        fleet.add(new Ship("Cruiser", 3, 'R', opponent));
+        fleet.add(new Ship("Destroyer", 2, 'D', opponent));
+        fleet.add(new Ship("Submarine", 2, 'S', opponent));
     }
 
     public boolean areAllShipsSetSail(){
@@ -98,35 +98,34 @@ public class Battleship {
         grid.shoot(x, y);
     }
 
-    public char playerMove(int x, int y) {
-        char shotResult = opponentsGrid.shoot(x, y);
-        if(shotResult == 'C' || shotResult == 'B' || shotResult == 'R' || shotResult == 'D' || shotResult == 'S')
-            hitTheShip(shotResult, opponentsFleet);
-        return shotResult;
+    public void playerMove(int x, int y) {
+        opponentsGrid.shoot(x, y);
     }
 
     public int[] computerMove(){
         Random rand = new Random();
         int x, y;
         int[] huntResult;
-        char shotResult;
         if(isHuntMode()) {
             huntResult = hunt();
             x = huntResult[0];
             y = huntResult[1];
-            shotResult = playersGrid.shoot(x, y);
         }
         else {
             do {
                 x = rand.nextInt(10);
                 y = rand.nextInt(10);
-                shotResult = playersGrid.shoot(x, y);
-            } while (shotResult == '2');
+            } while (playersGrid.getSquare(x, y).wasShot());
         }
-        if (shotResult == 'C' || shotResult == 'B' || shotResult == 'R' || shotResult == 'D' || shotResult == 'S') {
+        playersGrid.shoot(x, y);
+        Square square = playersGrid.getSquare(x, y);
+        if (square.hasShip()) {
             setHuntMode(true);
             lastHits.add(new int[]{x, y});
-            hitTheShip(shotResult, playersFleet);
+            if(square.getShip().isDestroyed){
+                lastHits.clear();
+                setHuntMode(false);
+            }
         }
         return new int[]{x, y};
     }
@@ -149,8 +148,8 @@ public class Battleship {
     //if x,y has already been shot at
     public void addIfViable(int x, int y){
         if(x > -1 && x < 10 && y > -1 && y < 10){
-            char mark = playersGrid.getBattlemap()[x][y];
-            if(mark != 'M')
+            Square square = playersGrid.getBattlemap()[x][y];
+            if(!square.wasShot())
                 possibleShots.add(new int[]{x,y});
         }
     }
@@ -218,21 +217,6 @@ public class Battleship {
                 counter++;
         }
         return counter == 5;
-    }
-
-    public void hitTheShip(char shotResult, ArrayList<Ship> fleet) {
-        for(Ship ship : fleet){
-            if (ship.getSymbol() == shotResult) {
-                ship.hit();
-                if (ship.isDestroyed && fleet.equals(opponentsFleet))
-                    System.out.println("Enemy " + ship.getName() + " has been sunk");
-                else if (ship.isDestroyed && fleet.equals(playersFleet)) {
-                    System.out.println("Your " + ship.getName() + " has been sunk");
-                    lastHits.clear();
-                    huntMode = false;
-                }
-            }
-        }
     }
 
 }

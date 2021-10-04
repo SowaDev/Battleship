@@ -1,7 +1,6 @@
 package app.battleship;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -13,7 +12,7 @@ public class BattleshipController {
     private Battleship battleship;
     private final int playersGridSize = 30;
     private final int shootingGridSize = 39;
-    private Label[][] pSquares;
+    private Label[][] pfields;
     @FXML
     private GridPane shotGrid;
     @FXML
@@ -34,55 +33,57 @@ public class BattleshipController {
     }
 
     public void prepare(){
-        pSquares = new Label[10][10];
+        pfields = new Label[10][10];
         Label[][] oSquares = new Label[10][10];
-        fillGrid(playersGrid, pSquares, battleship.getPlayersGrid(), playersGridSize);
+        fillGrid(playersGrid, pfields, battleship.getPlayersGrid(), playersGridSize);
         fillGrid(shotGrid, oSquares, battleship.getOpponentsGrid(), shootingGridSize);
     }
 
-    public void fillGrid(GridPane gridpane, Label[][] squares, Grid grid, int size){
+    public void fillGrid(GridPane gridpane, Label[][] fields, Grid grid, int size){
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 10; j++){
-                squares[i][j] = new Label();
-                Label square = squares[i][j];
-                char field = grid.getBattlemap()[i][j];
-                if((field == 'C' || field == 'B' || field == 'R' || field == 'D' || field == 'S') && gridpane.equals(playersGrid))
-                    square.setStyle("-fx-background-color: black");
+                fields[i][j] = new Label();
+                Label field = fields[i][j];
+                Square square = grid.getSquare(i, j);
+                if((square.hasShip() && gridpane.equals(playersGrid)))
+                    field.setStyle("-fx-background-color: black");
                 else
-                    square.setStyle("-fx-background-color: gray");
+                    field.setStyle("-fx-background-color: gray");
                 if(gridpane.equals(shotGrid))
-                    square.setOnMouseClicked(this::handleMove);
-                square.setPrefSize(size, size);
-                gridpane.add(square, j, i);
+                    field.setOnMouseClicked(this::handleMove);
+                field.setPrefSize(size, size);
+                gridpane.add(field, j, i);
             }
         }
     }
 
     public void handleMove(MouseEvent event) {
-        Label square = (Label) event.getSource();
-        int x = GridPane.getRowIndex(square), y = GridPane.getColumnIndex(square);
-        char shotResult = battleship.playerMove(x,y);
-        if(shotResult != '2') {
-            revealTheSquare(shotResult, square);
+        Label field = (Label) event.getSource();
+        int x = GridPane.getRowIndex(field), y = GridPane.getColumnIndex(field);
+        Square square = battleship.getOpponentsGrid().getSquare(x, y);
+        System.out.println(x + " " + y);
+        if(!square.wasShot()) {
+            battleship.playerMove(x, y);
+            revealTheSquare(field, square);
             handleEnemyMove(battleship.computerMove());
         }
     }
 
     public void handleEnemyMove(int [] xy){
         Grid playersGrid = battleship.getPlayersGrid();
-        Label square = pSquares[xy[0]][xy[1]];
-        char field = playersGrid.getBattlemap()[xy[0]][xy[1]];
+        Label field = pfields[xy[0]][xy[1]];
+        Square square = playersGrid.getSquare(xy[0], xy[1]);
+        //char field = playersGrid.getBattlemap()[xy[0]][xy[1]];
         revealTheSquare(field, square);
     }
 
 
-    public void revealTheSquare(char shotResult, Label square){
-        if(shotResult == 'M')
-            square.setStyle("-fx-background-color: lightblue");
-        else if(shotResult != '2') {
-            square.setStyle("-fx-background-color: red");
-            handleGameOver(battleship.checkIfGameIsOver());
-        }
+    public void revealTheSquare(Label field, Square square){
+        if(square.hasShip())
+            field.setStyle("-fx-background-color: red");
+        else
+            field.setStyle("-fx-background-color: lightblue");
+        handleGameOver(battleship.checkIfGameIsOver());
     }
 
     public void handleGameOver(String whoWins){
