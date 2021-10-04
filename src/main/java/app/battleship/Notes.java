@@ -62,23 +62,7 @@ public class Notes {
             content.putString(sourceButton.getText());
             db.setContent(content);
             event.consume();
-        }
-//
-//    //Determines which objects can accept the data
-//    public void handleDragOver(DragEvent event){
-//        if(event.getDragboard().hasString())
-//            event.acceptTransferModes(TransferMode.ANY);
-//        event.consume();
-//    }
+}        }
 
-//    //Gives visual feedback
-//    public void handleDragEntered(DragEvent event){
-//        event.consume();
-//    }
-
-//    public void handleDragDropped(DragEvent event){
-//
-//    }
-    }
 
 }
