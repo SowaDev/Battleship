@@ -5,8 +5,6 @@ import java.util.*;
 public class Battleship {
     private Player player;
     private Player opponent;
-    private boolean isPlayersTurn = true;
-    private boolean isGameOver;
     private boolean huntMode;
     ArrayList<int []> lastHits;
     ArrayList<int []> possibleShots;
@@ -24,16 +22,7 @@ public class Battleship {
         this.huntMode = huntMode;
     }
 
-    public boolean isPlayersTurn() {
-        return isPlayersTurn;
-    }
-
-    public void setPlayersTurn(boolean playersTurn) {
-        isPlayersTurn = playersTurn;
-    }
-
     public void prepareTheGameWithComputer(){
-        opponent = new Player("Computer");
         opponent.putShipsAtRandom();
         lastHits = new ArrayList<>();
         possibleShots = new ArrayList<>();
@@ -125,7 +114,6 @@ public class Battleship {
         }
     }
 
-
     public int[] verticalMinMax(int x){
         int min = x, max = x;
         for(int[] hit : lastHits){
@@ -148,11 +136,10 @@ public class Battleship {
         return new int[]{min, max};
     }
 
-
     public String checkIfGameIsOver(){
-        if(player.isFleetDestroyed())
+        if(player.getFleet().isFleetDestroyed())
             return "Computer wins";
-        if(opponent.isFleetDestroyed())
+        if(opponent.getFleet().isFleetDestroyed())
             return "You win";
         return "No over";
     }

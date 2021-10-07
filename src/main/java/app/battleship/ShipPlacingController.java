@@ -20,9 +20,7 @@ public class ShipPlacingController {
     private final int size = 39;
     private boolean dropped = false;
     private Player player;
-    private Player opponent;
     private Label[][] squares;
-    char[] symbols = {'C', 'B', 'R', 'D', 'S'};
     AlertBox alertBox;
 
     @FXML
@@ -34,11 +32,8 @@ public class ShipPlacingController {
 
     public void prepareForShipPlacing(String playerName) {
         player = new Player(playerName);
-        //opponent = new Player("Computer");
-        //battleship = new Battleship();
         fillGridPaneWithLabels();
         createShipButtons();
-        //alertBox = new AlertBox();
     }
 
 
@@ -61,7 +56,7 @@ public class ShipPlacingController {
 
     //creates ship buttons with size corresponding to their length
     public void createShipButtons(){
-        for(Ship ship : player.getFleet()){
+        for(Ship ship : player.getFleet().getShips()){
             Button shipButton = new Button();
             shipButton.setText(ship.getName());
             shipButton.setPrefSize(size * ship.getLength(), size);
@@ -183,15 +178,12 @@ public class ShipPlacingController {
 
 
     public void goToBattleship(ActionEvent event) throws IOException {
-        if(player.areAllShipsSetSail()) {
+        if(player.getFleet().areAllShipsSetSail()) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("battleship.fxml"));
             Parent root = loader.load();
             BattleshipController battleshipController = loader.getController();
             battleshipController.createNewGame(player);
             battleshipController.prepare();
-//            battleship.prepareTheGameWithComputer();
-//            battleshipController.setBattleship(battleship);
-//            battleshipController.prepare();
             Stage stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
             Scene scene = new Scene(root);
             stage.setScene(scene);
