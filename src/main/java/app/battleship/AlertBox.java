@@ -70,7 +70,7 @@ public class AlertBox {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("shipPlacing.fxml"));
         Parent root = loader.load();
         ShipPlacingController shipPlacingController = loader.getController();
-        shipPlacingController.prepareForShipPlacing();
+        shipPlacingController.prepareForShipPlacing("playerName");
         //Stage stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
         Scene scene = new Scene(root);
         stage.setScene(scene);

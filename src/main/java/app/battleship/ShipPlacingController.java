@@ -19,7 +19,8 @@ import java.io.IOException;
 public class ShipPlacingController {
     private final int size = 39;
     private boolean dropped = false;
-    private Battleship battleship;
+    private Player player;
+    private Player opponent;
     private Label[][] squares;
     char[] symbols = {'C', 'B', 'R', 'D', 'S'};
     AlertBox alertBox;
@@ -31,8 +32,10 @@ public class ShipPlacingController {
     private GridPane gridPane;
 
 
-    public void prepareForShipPlacing() {
-        battleship = new Battleship();
+    public void prepareForShipPlacing(String playerName) {
+        player = new Player(playerName);
+        //opponent = new Player("Computer");
+        //battleship = new Battleship();
         fillGridPaneWithLabels();
         createShipButtons();
         //alertBox = new AlertBox();
@@ -58,7 +61,7 @@ public class ShipPlacingController {
 
     //creates ship buttons with size corresponding to their length
     public void createShipButtons(){
-        for(Ship ship : battleship.getPlayersFleet()){
+        for(Ship ship : player.getFleet()){
             Button shipButton = new Button();
             shipButton.setText(ship.getName());
             shipButton.setPrefSize(size * ship.getLength(), size);
@@ -99,7 +102,7 @@ public class ShipPlacingController {
         Label square = (Label) event.getTarget();
         Button shipButton = (Button)event.getGestureSource();
         Ship ship = (Ship) shipButton.getUserData();
-        String result = (battleship.getPlayersGrid().placeShip(ship, GridPane.getRowIndex(square), GridPane.getColumnIndex(square)));
+        String result = (player.getGrid().placeShip(ship, GridPane.getRowIndex(square), GridPane.getColumnIndex(square)));
         if(result.equals("Success")){
             colorTheSquares(square, shipButton, "black");
             dropped = true;
@@ -143,7 +146,7 @@ public class ShipPlacingController {
     public void colorGridPaneAccordinglyToTheGrid(){
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 10; j++){
-                Square square = battleship.getPlayersGrid().getBattlemap()[i][j];
+                Square square = player.getGrid().getBattlemap()[i][j];
                 if(square.getShip() != null)
                     squares[i][j].setStyle("-fx-background-color: black");
             }
@@ -152,7 +155,7 @@ public class ShipPlacingController {
 
     //Put ships at random
     public void randomSetup(){
-        battleship.putShipsAtRandom(battleship.getPlayersFleet(), battleship.getPlayersGrid());
+        player.putShipsAtRandom();
         colorGridPaneAccordinglyToTheGrid();
         shipBox.getChildren().removeAll(shipBox.getChildren());
     }
@@ -180,13 +183,15 @@ public class ShipPlacingController {
 
 
     public void goToBattleship(ActionEvent event) throws IOException {
-        if(battleship.areAllShipsSetSail()) {
+        if(player.areAllShipsSetSail()) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("battleship.fxml"));
             Parent root = loader.load();
             BattleshipController battleshipController = loader.getController();
-            battleship.prepareTheGameWithComputer();
-            battleshipController.setBattleship(battleship);
+            battleshipController.createNewGame(player);
             battleshipController.prepare();
+//            battleship.prepareTheGameWithComputer();
+//            battleshipController.setBattleship(battleship);
+//            battleshipController.prepare();
             Stage stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
             Scene scene = new Scene(root);
             stage.setScene(scene);

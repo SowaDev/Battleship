@@ -15,7 +15,6 @@ import java.io.IOException;
 public class MainController {
 
     String playerName;
-
     @FXML
     private TextField nameInput;
 
@@ -33,7 +32,7 @@ public class MainController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("shipPlacing.fxml"));
         Parent root = loader.load();
         ShipPlacingController shipPlacingController = loader.getController();
-        shipPlacingController.prepareForShipPlacing();
+        shipPlacingController.prepareForShipPlacing(playerName);
         Stage stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
         Scene scene = new Scene(root);
         stage.setScene(scene);
