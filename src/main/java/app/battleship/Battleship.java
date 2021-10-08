@@ -3,20 +3,15 @@ package app.battleship;
 import java.util.*;
 
 public class Battleship {
-    private ArrayList<Ship> playersFleet;
-    private ArrayList<Ship> opponentsFleet;
-    private Grid playersGrid;
-    private Grid opponentsGrid;
-    private boolean isPlayersTurn = true;
-    private boolean isGameOver;
+    private Player player;
+    private Player opponent;
     private boolean huntMode;
     ArrayList<int []> lastHits;
     ArrayList<int []> possibleShots;
 
-    Battleship() {
-        playersFleet = new ArrayList<Ship>();
-        addShipsToTheFleet(playersFleet, false);
-        playersGrid = new Grid();
+    Battleship(Player player, Player opponent) {
+        this.player = player;
+        this.opponent = opponent;
     }
 
     public boolean isHuntMode() {
@@ -27,69 +22,10 @@ public class Battleship {
         this.huntMode = huntMode;
     }
 
-    public ArrayList<Ship> getPlayersFleet(){
-        return playersFleet;
-    }
-
-    public Grid getPlayersGrid() {
-        return playersGrid;
-    }
-
-    public Grid getOpponentsGrid() {
-        return opponentsGrid;
-    }
-
-    public boolean isPlayersTurn() {
-        return isPlayersTurn;
-    }
-
-    public void setPlayersTurn(boolean playersTurn) {
-        isPlayersTurn = playersTurn;
-    }
-
     public void prepareTheGameWithComputer(){
-        opponentsFleet = new ArrayList<Ship>();
-        opponentsGrid = new Grid();
-        addShipsToTheFleet(opponentsFleet, true);
-        putShipsAtRandom(opponentsFleet, opponentsGrid);
+        opponent.putShipsAtRandom();
         lastHits = new ArrayList<>();
         possibleShots = new ArrayList<>();
-    }
-
-    public void addShipsToTheFleet(ArrayList<Ship> fleet, boolean opponent){
-        fleet.add(new Ship("Carrier", 5, 'C', opponent));
-        fleet.add(new Ship("Battleship", 4, 'B', opponent));
-        fleet.add(new Ship("Cruiser", 3, 'R', opponent));
-        fleet.add(new Ship("Destroyer", 2, 'D', opponent));
-        fleet.add(new Ship("Submarine", 2, 'S', opponent));
-    }
-
-    public boolean areAllShipsSetSail(){
-        int counter = 0;
-        for(Ship ship : playersFleet){
-            if(ship.isSetSail())
-                counter++;
-        }
-        return counter == playersFleet.size();
-    }
-
-    public void putShipsAtRandom(ArrayList<Ship> fleet, Grid grid){
-        Random rand = new Random();
-        int x, y;
-        for(Ship ship : fleet){
-            while(!ship.isSetSail()) {
-                boolean direction = rand.nextBoolean();
-                ship.setVertical(direction);
-                if(ship.isVertical()) {
-                    x = rand.nextInt(10 - ship.getLength());
-                    y = rand.nextInt(10);
-                } else {
-                    x = rand.nextInt(10);
-                    y = rand.nextInt(10 - ship.getLength());
-                }
-                grid.placeShip(ship, x, y);
-            }
-        }
     }
 
     private void randomShot(Grid grid){
@@ -99,7 +35,7 @@ public class Battleship {
     }
 
     public void playerMove(int x, int y) {
-        opponentsGrid.shoot(x, y);
+        opponent.getGrid().shoot(x, y);
     }
 
     public int[] computerMove(){
@@ -115,10 +51,10 @@ public class Battleship {
             do {
                 x = rand.nextInt(10);
                 y = rand.nextInt(10);
-            } while (playersGrid.getSquare(x, y).wasShot());
+            } while (player.getGrid().getSquare(x, y).wasShot());
         }
-        playersGrid.shoot(x, y);
-        Square square = playersGrid.getSquare(x, y);
+        player.getGrid().shoot(x, y);
+        Square square = player.getGrid().getSquare(x, y);
         if (square.hasShip()) {
             setHuntMode(true);
             lastHits.add(new int[]{x, y});
@@ -148,7 +84,7 @@ public class Battleship {
     //if x,y has already been shot at
     public void addIfViable(int x, int y){
         if(x > -1 && x < 10 && y > -1 && y < 10){
-            Square square = playersGrid.getBattlemap()[x][y];
+            Square square = player.getGrid().getBattlemap()[x][y];
             if(!square.wasShot())
                 possibleShots.add(new int[]{x,y});
         }
@@ -178,7 +114,6 @@ public class Battleship {
         }
     }
 
-
     public int[] verticalMinMax(int x){
         int min = x, max = x;
         for(int[] hit : lastHits){
@@ -201,22 +136,12 @@ public class Battleship {
         return new int[]{min, max};
     }
 
-
     public String checkIfGameIsOver(){
-        if(isFleetDestroyed(playersFleet))
+        if(player.getFleet().isFleetDestroyed())
             return "Computer wins";
-        if(isFleetDestroyed(opponentsFleet))
+        if(opponent.getFleet().isFleetDestroyed())
             return "You win";
         return "No over";
-    }
-
-    public boolean isFleetDestroyed(ArrayList<Ship> fleet){
-        int counter = 0;
-        for(Ship ship : fleet){
-            if(ship.isDestroyed)
-                counter++;
-        }
-        return counter == 5;
     }
 
 }

@@ -10,33 +10,28 @@ import java.io.IOException;
 
 public class BattleshipController {
     private Battleship battleship;
-    private final int playersGridSize = 30;
-    private final int shootingGridSize = 39;
-    private Label[][] pfields;
+    private Player player;
+    private Player opponent;
+    private Label[][] pFields;
     @FXML
     private GridPane shotGrid;
     @FXML
     private GridPane playersGrid;
-    @FXML
-    public Label whoseTurnIsIt;
+    private final int playersGridSize = 30;
+    private final int shootingGridSize = 39;
 
-
-    public void setBattleship(Battleship battleship){
-        this.battleship = battleship;
-    }
-
-    public void setWhoseTurnIsIt(boolean isPlayerTurn){
-        if(isPlayerTurn)
-            whoseTurnIsIt.setText("Your turn");
-        else
-            whoseTurnIsIt.setText("Computer turn");
+    public void createNewGame(Player player){
+        this.player = player;
+        this.opponent = new Player("Computer");
+        this.battleship = new Battleship(player, this.opponent);
+        battleship.prepareTheGameWithComputer();
     }
 
     public void prepare(){
-        pfields = new Label[10][10];
+        pFields = new Label[10][10];
         Label[][] oSquares = new Label[10][10];
-        fillGrid(playersGrid, pfields, battleship.getPlayersGrid(), playersGridSize);
-        fillGrid(shotGrid, oSquares, battleship.getOpponentsGrid(), shootingGridSize);
+        fillGrid(playersGrid, pFields, player.getGrid(), playersGridSize);
+        fillGrid(shotGrid, oSquares, opponent.getGrid(), shootingGridSize);
     }
 
     public void fillGrid(GridPane gridpane, Label[][] fields, Grid grid, int size){
@@ -46,6 +41,7 @@ public class BattleshipController {
                 Label field = fields[i][j];
                 Square square = grid.getSquare(i, j);
                 if((square.hasShip() && gridpane.equals(playersGrid)))
+                //if((square.hasShip()))
                     field.setStyle("-fx-background-color: black");
                 else
                     field.setStyle("-fx-background-color: gray");
@@ -60,7 +56,7 @@ public class BattleshipController {
     public void handleMove(MouseEvent event) {
         Label field = (Label) event.getSource();
         int x = GridPane.getRowIndex(field), y = GridPane.getColumnIndex(field);
-        Square square = battleship.getOpponentsGrid().getSquare(x, y);
+        Square square = opponent.getGrid().getSquare(x, y);
         System.out.println(x + " " + y);
         if(!square.wasShot()) {
             battleship.playerMove(x, y);
@@ -70,10 +66,9 @@ public class BattleshipController {
     }
 
     public void handleEnemyMove(int [] xy){
-        Grid playersGrid = battleship.getPlayersGrid();
-        Label field = pfields[xy[0]][xy[1]];
+        Grid playersGrid = player.getGrid();
+        Label field = pFields[xy[0]][xy[1]];
         Square square = playersGrid.getSquare(xy[0], xy[1]);
-        //char field = playersGrid.getBattlemap()[xy[0]][xy[1]];
         revealTheSquare(field, square);
     }
 

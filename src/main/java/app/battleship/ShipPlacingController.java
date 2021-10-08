@@ -19,9 +19,8 @@ import java.io.IOException;
 public class ShipPlacingController {
     private final int size = 39;
     private boolean dropped = false;
-    private Battleship battleship;
+    private Player player;
     private Label[][] squares;
-    char[] symbols = {'C', 'B', 'R', 'D', 'S'};
     AlertBox alertBox;
 
     @FXML
@@ -31,11 +30,10 @@ public class ShipPlacingController {
     private GridPane gridPane;
 
 
-    public void prepareForShipPlacing() {
-        battleship = new Battleship();
+    public void prepareForShipPlacing(String playerName) {
+        player = new Player(playerName);
         fillGridPaneWithLabels();
         createShipButtons();
-        //alertBox = new AlertBox();
     }
 
 
@@ -45,7 +43,7 @@ public class ShipPlacingController {
             for(int j = 0; j < squares.length; j++){
                 squares[i][j] = new Label();
                 Label square = squares[i][j];
-                square.setStyle("-fx-background-color: white");
+                square.setStyle("-fx-background-color: lightblue");
                 square.setOnDragEntered(this::handleDragEntered);
                 square.setOnDragOver(this::handleDragOver);
                 square.setOnDragExited(this::handleDragExited);
@@ -58,10 +56,11 @@ public class ShipPlacingController {
 
     //creates ship buttons with size corresponding to their length
     public void createShipButtons(){
-        for(Ship ship : battleship.getPlayersFleet()){
+        for(Ship ship : player.getFleet().getShips()){
             Button shipButton = new Button();
             shipButton.setText(ship.getName());
             shipButton.setPrefSize(size * ship.getLength(), size);
+            shipButton.setStyle("-fx-background-color: dimgray; -fx-font-weight: bold");
             shipButton.setUserData(ship);
             shipButton.setOnDragDetected(this::handleDragDetected);
             shipButton.setOnDragDone(this::handleDragDone);
@@ -99,9 +98,9 @@ public class ShipPlacingController {
         Label square = (Label) event.getTarget();
         Button shipButton = (Button)event.getGestureSource();
         Ship ship = (Ship) shipButton.getUserData();
-        String result = (battleship.getPlayersGrid().placeShip(ship, GridPane.getRowIndex(square), GridPane.getColumnIndex(square)));
+        String result = (player.getGrid().placeShip(ship, GridPane.getRowIndex(square), GridPane.getColumnIndex(square)));
         if(result.equals("Success")){
-            colorTheSquares(square, shipButton, "black");
+            colorTheSquares(square, shipButton, "dimgray");
             dropped = true;
         } else {
             AlertBox.display("Wrong placement", result);
@@ -116,7 +115,7 @@ public class ShipPlacingController {
         Label square = (Label) event.getTarget();
         Button shipButton = (Button)event.getGestureSource();
         if(!dropped)
-            colorTheSquares(square, shipButton, "white");
+            colorTheSquares(square, shipButton, "lightblue");
         else
             dropped = false;
         event.consume();
@@ -127,9 +126,7 @@ public class ShipPlacingController {
         Button sourceButton = (Button) event.getSource();
         if(event.getTransferMode() == TransferMode.MOVE){
             Dragboard db = event.getDragboard();
-            //System.out.println(db.getString());
             shipBox.getChildren().remove(sourceButton);
-            //sourceButton.setVisible(false);
         }
         event.consume();
     }
@@ -143,16 +140,16 @@ public class ShipPlacingController {
     public void colorGridPaneAccordinglyToTheGrid(){
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 10; j++){
-                Square square = battleship.getPlayersGrid().getBattlemap()[i][j];
+                Square square = player.getGrid().getBattlemap()[i][j];
                 if(square.getShip() != null)
-                    squares[i][j].setStyle("-fx-background-color: black");
+                    squares[i][j].setStyle("-fx-background-color: dimgray");
             }
         }
     }
 
     //Put ships at random
     public void randomSetup(){
-        battleship.putShipsAtRandom(battleship.getPlayersFleet(), battleship.getPlayersGrid());
+        player.putShipsAtRandom();
         colorGridPaneAccordinglyToTheGrid();
         shipBox.getChildren().removeAll(shipBox.getChildren());
     }
@@ -173,19 +170,18 @@ public class ShipPlacingController {
                     break;
                 square = squares[x][y + i];
             }
-            if (!square.getStyle().equals("-fx-background-color: black"))
+            if (!square.getStyle().equals("-fx-background-color: dimgray"))
                 square.setStyle("-fx-background-color: " + color);
         }
     }
 
 
     public void goToBattleship(ActionEvent event) throws IOException {
-        if(battleship.areAllShipsSetSail()) {
+        if(player.getFleet().areAllShipsSetSail()) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("battleship.fxml"));
             Parent root = loader.load();
             BattleshipController battleshipController = loader.getController();
-            battleship.prepareTheGameWithComputer();
-            battleshipController.setBattleship(battleship);
+            battleshipController.createNewGame(player);
             battleshipController.prepare();
             Stage stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
             Scene scene = new Scene(root);
