@@ -143,8 +143,8 @@ public class ShipPlacingController {
     public void colorGridPaneAccordinglyToTheGrid(){
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 10; j++){
-                char field = battleship.getPlayersGrid().getBattlemap()[i][j];
-                if(field == 'C' || field == 'B' || field == 'R' || field == 'D' || field == 'S')
+                Square square = battleship.getPlayersGrid().getBattlemap()[i][j];
+                if(square.getShip() != null)
                     squares[i][j].setStyle("-fx-background-color: black");
             }
         }
