@@ -43,7 +43,7 @@ public class ShipPlacingController {
             for(int j = 0; j < squares.length; j++){
                 squares[i][j] = new Label();
                 Label square = squares[i][j];
-                square.setStyle("-fx-background-color: white");
+                square.setStyle("-fx-background-color: lightblue");
                 square.setOnDragEntered(this::handleDragEntered);
                 square.setOnDragOver(this::handleDragOver);
                 square.setOnDragExited(this::handleDragExited);
@@ -60,6 +60,7 @@ public class ShipPlacingController {
             Button shipButton = new Button();
             shipButton.setText(ship.getName());
             shipButton.setPrefSize(size * ship.getLength(), size);
+            shipButton.setStyle("-fx-background-color: dimgray; -fx-font-weight: bold");
             shipButton.setUserData(ship);
             shipButton.setOnDragDetected(this::handleDragDetected);
             shipButton.setOnDragDone(this::handleDragDone);
@@ -99,7 +100,7 @@ public class ShipPlacingController {
         Ship ship = (Ship) shipButton.getUserData();
         String result = (player.getGrid().placeShip(ship, GridPane.getRowIndex(square), GridPane.getColumnIndex(square)));
         if(result.equals("Success")){
-            colorTheSquares(square, shipButton, "black");
+            colorTheSquares(square, shipButton, "dimgray");
             dropped = true;
         } else {
             AlertBox.display("Wrong placement", result);
@@ -114,7 +115,7 @@ public class ShipPlacingController {
         Label square = (Label) event.getTarget();
         Button shipButton = (Button)event.getGestureSource();
         if(!dropped)
-            colorTheSquares(square, shipButton, "white");
+            colorTheSquares(square, shipButton, "lightblue");
         else
             dropped = false;
         event.consume();
@@ -125,9 +126,7 @@ public class ShipPlacingController {
         Button sourceButton = (Button) event.getSource();
         if(event.getTransferMode() == TransferMode.MOVE){
             Dragboard db = event.getDragboard();
-            //System.out.println(db.getString());
             shipBox.getChildren().remove(sourceButton);
-            //sourceButton.setVisible(false);
         }
         event.consume();
     }
@@ -143,7 +142,7 @@ public class ShipPlacingController {
             for(int j = 0; j < 10; j++){
                 Square square = player.getGrid().getBattlemap()[i][j];
                 if(square.getShip() != null)
-                    squares[i][j].setStyle("-fx-background-color: black");
+                    squares[i][j].setStyle("-fx-background-color: dimgray");
             }
         }
     }
@@ -171,7 +170,7 @@ public class ShipPlacingController {
                     break;
                 square = squares[x][y + i];
             }
-            if (!square.getStyle().equals("-fx-background-color: black"))
+            if (!square.getStyle().equals("-fx-background-color: dimgray"))
                 square.setStyle("-fx-background-color: " + color);
         }
     }
