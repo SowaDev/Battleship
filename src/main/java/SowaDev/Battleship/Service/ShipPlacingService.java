@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -80,6 +81,23 @@ public class ShipPlacingService {
         for(Coordinates coordinates : coordinatesList){
             grid.getBattleMap()[coordinates.getX()][coordinates.getY()].setShip(ship);
         }
+    }
+
+    public Grid putShipsAtRandom(Player player) {
+        Random rand = new Random();
+        for(Ship ship : player.getFleet()){
+            while(!ship.isSetSail()){
+                ship.setPlacement(new ArrayList<>());
+                ship.setVertical(rand.nextBoolean());
+                int x = ship.isVertical() ? rand.nextInt(10 - ship.getLength()) : rand.nextInt();
+                int y = ship.isVertical() ? rand.nextInt(10) : rand.nextInt(10 - ship.getLength());
+                for(int i = 0; i < ship.getLength(); i++) {
+                    Coordinates newCoordinates = ship.isVertical() ? new Coordinates(x + i, y) : new Coordinates(x, y + 1);
+                }
+                placeShip(player, new ShipPlacement(player.getFleet().indexOf(ship), ship.getPlacement()));
+            }
+        }
+        return player.getGrid();
     }
 
 /*    public Grid removeShip(Player player, int shipId){
