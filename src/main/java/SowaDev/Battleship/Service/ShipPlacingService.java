@@ -89,10 +89,11 @@ public class ShipPlacingService {
             while(!ship.isSetSail()){
                 ship.setPlacement(new ArrayList<>());
                 ship.setVertical(rand.nextBoolean());
-                int x = ship.isVertical() ? rand.nextInt(10 - ship.getLength()) : rand.nextInt();
+                int x = ship.isVertical() ? rand.nextInt(10 - ship.getLength()) : rand.nextInt(10);
                 int y = ship.isVertical() ? rand.nextInt(10) : rand.nextInt(10 - ship.getLength());
                 for(int i = 0; i < ship.getLength(); i++) {
                     Coordinates newCoordinates = ship.isVertical() ? new Coordinates(x + i, y) : new Coordinates(x, y + 1);
+                    ship.getPlacement().add(newCoordinates);
                 }
                 placeShip(player, new ShipPlacement(player.getFleet().indexOf(ship), ship.getPlacement()));
             }
