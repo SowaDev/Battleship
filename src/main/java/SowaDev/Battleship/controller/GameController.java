@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-@RestController
 @SessionAttributes("player")
+@RestController
 public class GameController {
     private final ShipPlacingService shipPlacingService;
 
@@ -27,7 +26,7 @@ public class GameController {
     }
 
     @GetMapping
-    public Player getAttributes(@ModelAttribute("player") Player player){
+    public Player getAttributes(@ModelAttribute("player") Player player, HttpSession httpSession){
         return player;
     }
 
@@ -36,9 +35,20 @@ public class GameController {
         return player.getGrid().toString();
     }
 
+    @PutMapping("/setname/{name}")
+    public String setPlayerName(@PathVariable String name,
+                                @ModelAttribute("player") Player player){
+        player.setName(name);
+        return player.getName();
+    }
+
     @PutMapping
-    public Grid placeShip(@RequestBody ShipPlacement shipPlacement, @ModelAttribute("player") Player player){
-        return shipPlacingService.placeShip(player, shipPlacement);
+    public Player placeShip(@RequestBody ShipPlacement shipPlacement,
+                          @ModelAttribute("player") Player player,
+                          Model model){
+        String placementResult = shipPlacingService.placeShip(player, shipPlacement);
+        model.addAttribute("player", player);
+        return player;
     }
 
     @PutMapping("/removeShip")
