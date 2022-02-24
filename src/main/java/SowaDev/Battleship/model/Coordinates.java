@@ -1,10 +1,12 @@
 package SowaDev.Battleship.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Coordinates {
     private int x;
     private int y;

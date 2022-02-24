@@ -14,8 +14,7 @@ public class Player {
     private List<Ship> fleet = new ArrayList<>();
     private Grid grid;
 
-    public Player(String name, List<Ship> fleet, Grid grid){
-        this.name = name;
+    public Player(List<Ship> fleet, Grid grid){
         this.fleet = fleet;
         this.grid = grid;
     }
