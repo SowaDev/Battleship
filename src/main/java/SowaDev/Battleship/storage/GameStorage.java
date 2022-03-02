@@ -19,7 +19,7 @@ public class GameStorage {
         return instance;
     }
 
-    public static Map<String, Game> getGames() {
+    public Map<String, Game> getGames() {
         return games;
     }
 
