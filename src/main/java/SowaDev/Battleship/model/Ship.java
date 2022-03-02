@@ -15,7 +15,7 @@ public class Ship {
     private List<Coordinates> placement;
     private boolean isSetSail;
     private boolean isVertical;
-    public boolean isDestroyed;
+    private boolean isDestroyed;
 
     public Ship(String name, int length) {
         this.name = name;
