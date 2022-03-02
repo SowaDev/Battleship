@@ -5,21 +5,21 @@ import SowaDev.Battleship.storage.GameStorage;
 import org.springframework.boot.web.embedded.netty.NettyWebServer;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ShipPlacingService {
     private final int size = 10;
 
-//    public Game createGame() {
-//        Player player = new Player("player", createFleet(), new Grid());
-//        Game game = new Game(UUID.randomUUID().toString(), player, null, GameStatus.NEW);
-//        GameStorage.getInstance().setGame(game);
-//        return game;
-//    }
+    public Game createGame(Player player) {
+        Game game = new Game(UUID.randomUUID().toString(), player, null, GameStatus.NEW);
+        GameStorage.getInstance().setGame(game);
+        return game;
+    }
+
+    public Player createPlayer() {
+        return new Player(UUID.randomUUID().toString(), createFleet(), new Grid());
+    }
 
     public List<Ship> createFleet(){
         List<Ship> fleet = new ArrayList<>();
@@ -47,7 +47,7 @@ public class ShipPlacingService {
 
 
     public String isPossibleToPlaceShip(Ship ship, Grid grid, List<Coordinates> coordinatesList) {
-        String placementResult;
+        String placementResult = "ok";
         if(ship.getLength() != coordinatesList.size())
             placementResult = "Coordinates don't match ship length. Logic error.";
         for(Coordinates coordinates : coordinatesList){
@@ -59,7 +59,7 @@ public class ShipPlacingService {
             else if(grid.getBattleMap()[x][y].isRestricted())
                 placementResult = "You've put a ship too close to another. There must be one square gap between ships";
         }
-        return "ok";
+        return placementResult;
     }
 
     public Grid removeShip(Player player, int shipId){
@@ -86,6 +86,14 @@ public class ShipPlacingService {
         }
     }
 
+    public boolean areAllShipsSetSail(Player player){
+        for(Ship ship : player.getFleet()){
+            if(!ship.isSetSail())
+                return false;
+        }
+        return true;
+    }
+
     public Grid putShipsAtRandom(Player player) {
         Random rand = new Random();
         for(Ship ship : player.getFleet()){
@@ -102,6 +110,25 @@ public class ShipPlacingService {
             }
         }
         return player.getGrid();
+    }
+
+    public Game play(Player player, String name) {
+        player.setName(name);
+        if(!areAllShipsSetSail(player))
+            throw new IllegalStateException("You didn't put out all of the ships");
+        Optional<Game> optionalGame = GameStorage.getInstance().getGames().values().stream()
+                .filter(g -> g.getGameStatus().equals(GameStatus.NEW))
+                .findFirst();
+        Game game;
+        if(optionalGame.isPresent()) {
+            game = optionalGame.get();
+            game.setPlayer2(player);
+        } else
+            game = createGame(player);
+//        Game game = GameStorage.getInstance().getGames().values().stream()
+//                .filter(g -> g.getGameStatus() == GameStatus.NEW)
+//                .findFirst().orElse(createGame(player));
+        return game;
     }
 
 }
