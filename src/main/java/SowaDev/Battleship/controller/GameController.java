@@ -1,6 +1,7 @@
 package SowaDev.Battleship.controller;
 
 import SowaDev.Battleship.service.BattleshipService;
+import SowaDev.Battleship.service.GameService;
 import SowaDev.Battleship.service.ShipPlacingService;
 import SowaDev.Battleship.model.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -12,14 +13,16 @@ import javax.servlet.http.HttpSession;
 public class GameController {
     private final ShipPlacingService shipPlacingService;
     private final BattleshipService battleshipService;
+    private final GameService gameService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
 //    @Autowired
 //    private Grid grid;
 
-    public GameController(ShipPlacingService shipPlacingService, BattleshipService battleshipService, SimpMessagingTemplate simpMessagingTemplate) {
+    public GameController(ShipPlacingService shipPlacingService, BattleshipService battleshipService, GameService gameService, SimpMessagingTemplate simpMessagingTemplate) {
         this.shipPlacingService = shipPlacingService;
         this.battleshipService = battleshipService;
+        this.gameService = gameService;
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
@@ -65,7 +68,7 @@ public class GameController {
     @PostMapping("/play")
     public Game play(@ModelAttribute("player") Player player,
                      @RequestBody String name){
-        return shipPlacingService.play(player, name);
+        return gameService.play(player, name);
     }
 
     @PostMapping("/shoot")

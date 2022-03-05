@@ -10,11 +10,6 @@ import java.util.*;
 public class ShipPlacingService {
     private final int size = 10;
 
-    public Game createGame(Player player) {
-        Game game = new Game(UUID.randomUUID().toString(), player, null, GameStatus.NEW);
-        GameStorage.getInstance().setGame(game);
-        return game;
-    }
 
     public Player createPlayer() {
         return new Player(UUID.randomUUID().toString(), createFleet(), new Grid());
@@ -85,14 +80,6 @@ public class ShipPlacingService {
         }
     }
 
-    public boolean areAllShipsSetSail(Player player){
-        for(Ship ship : player.getFleet()){
-            if(!ship.isSetSail())
-                return false;
-        }
-        return true;
-    }
-
     public Grid putShipsAtRandom(Player player) {
         Random rand = new Random();
         for(Ship ship : player.getFleet()){
@@ -110,29 +97,4 @@ public class ShipPlacingService {
         }
         return player.getGrid();
     }
-
-    public Game play(Player player, String name) {
-        player.setName(name);
-        if(!areAllShipsSetSail(player))
-            throw new IllegalStateException("You didn't put out all of the ships");
-        Optional<Game> optionalGame = GameStorage.getInstance().getGames().values().stream()
-                .filter(g -> g.getGameStatus().equals(GameStatus.NEW))
-                .findFirst();
-        Game game;
-        if(optionalGame.isPresent()) {
-            game = optionalGame.get();
-            game.setPlayer2(player);
-            game.setGameStatus(GameStatus.IN_PROGRESS);
-            game.setPlayerTurn(setRandomStarter(game.getPlayer1().getPlayerId(), game.getPlayer2().getPlayerId()));
-        } else
-            game = createGame(player);
-        return game;
-    }
-
-    private String setRandomStarter(String player1Id, String player2Id) {
-        Random rand = new Random();
-        int r = rand.nextInt(2);
-        return r == 0 ? player1Id : player2Id;
-    }
-
 }
