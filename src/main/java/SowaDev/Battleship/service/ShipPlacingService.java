@@ -1,8 +1,7 @@
-package SowaDev.Battleship.Service;
+package SowaDev.Battleship.service;
 
 import SowaDev.Battleship.model.*;
 import SowaDev.Battleship.storage.GameStorage;
-import org.springframework.boot.web.embedded.netty.NettyWebServer;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -123,12 +122,17 @@ public class ShipPlacingService {
         if(optionalGame.isPresent()) {
             game = optionalGame.get();
             game.setPlayer2(player);
+            game.setGameStatus(GameStatus.IN_PROGRESS);
+            game.setPlayerTurn(setRandomStarter(game.getPlayer1().getPlayerId(), game.getPlayer2().getPlayerId()));
         } else
             game = createGame(player);
-//        Game game = GameStorage.getInstance().getGames().values().stream()
-//                .filter(g -> g.getGameStatus() == GameStatus.NEW)
-//                .findFirst().orElse(createGame(player));
         return game;
+    }
+
+    private String setRandomStarter(String player1Id, String player2Id) {
+        Random rand = new Random();
+        int r = rand.nextInt(2);
+        return r == 0 ? player1Id : player2Id;
     }
 
 }
