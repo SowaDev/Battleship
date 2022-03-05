@@ -1,4 +1,4 @@
-package SowaDev.Battleship.Service;
+package SowaDev.Battleship.service;
 
 import SowaDev.Battleship.model.*;
 import SowaDev.Battleship.storage.GameStorage;
@@ -9,13 +9,13 @@ import java.util.NoSuchElementException;
 @Service
 public class BattleshipService {
 
-    public Game playerMove(Coordinates coordinates, String gameId, String playerId) {
-        if(!GameStorage.getInstance().getGames().containsKey(gameId))
+    public Game playerMove(Shot shot) {
+        if(!GameStorage.getInstance().getGames().containsKey(shot.getGameId()))
             throw new NoSuchElementException("Game not found");
-        Game game = GameStorage.getInstance().getGames().get(gameId);
-        checkIfCorrect(game, playerId);
-        Player opponent = getOpponent(game, playerId);
-        Square square = opponent.getGrid().getBattleMap()[coordinates.getX()][coordinates.getY()];
+        Game game = GameStorage.getInstance().getGames().get(shot.getGameId());
+        checkIfCorrect(game, shot.getPlayerId());
+        Player opponent = getOpponent(game, shot.getPlayerId());
+        Square square = opponent.getGrid().getBattleMap()[shot.getCoordinates().getX()][shot.getCoordinates().getY()];
         shoot(square, game, opponent);
         return game;
     }
@@ -40,12 +40,12 @@ public class BattleshipService {
     }
 
     public void checkIfCorrect(Game game, String playerId){
-        if(game.getPlayerTurn().equals(playerId))
-            throw new RuntimeException("It's not your turn");
         if(game.getGameStatus().equals(GameStatus.NEW))
             throw new RuntimeException("Game hasn't started yet. Still waiting for 2nd player");
         if(game.getGameStatus().equals(GameStatus.FINISHED))
             throw new RuntimeException("Game is finished");
+        if(game.getPlayerTurn().equals(playerId))
+            throw new RuntimeException("It's not your turn");
     }
 
     public Player getOpponent(Game game, String playerId){
