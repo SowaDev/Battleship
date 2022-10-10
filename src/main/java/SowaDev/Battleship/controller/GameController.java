@@ -6,10 +6,11 @@ import SowaDev.Battleship.service.ShipPlacingService;
 import SowaDev.Battleship.model.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
+
 @SessionAttributes("player")
 @RestController
+@CrossOrigin
 public class GameController {
     private final ShipPlacingService shipPlacingService;
     private final BattleshipService battleshipService;
