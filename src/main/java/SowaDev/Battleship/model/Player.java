@@ -3,7 +3,6 @@ package SowaDev.Battleship.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,10 +13,11 @@ public class Player {
 //    private UUID playerId;
     private String playerId;
 //    private Fleet fleet;
-    private List<Ship> fleet = new ArrayList<>();
+    private List<Ship> fleet;
     private Grid grid;
 
     public Player(String playerId, List<Ship> fleet, Grid grid){
+        this.name = "";
         this.playerId = playerId;
         this.fleet = fleet;
         this.grid = grid;
