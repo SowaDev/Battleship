@@ -8,3 +8,10 @@ export const fetchUser = async(url) => {
     console.error(e)
   }
 }
+
+export const setUserData = (userData, setUserId, setUserName, setGrid, setFleet) => {
+  setUserId(userData.playerId)
+  setUserName(userData.name)
+  setGrid(userData.grid)
+  setFleet(userData.Fleet)
+}

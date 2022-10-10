@@ -1,5 +1,5 @@
-import {useState, useEffect} from 'react'
-import {fetchUser} from '../../Utils.js'
+import { useState, useEffect } from 'react'
+import { fetchUser, setUserData } from '../../Utils.js'
 import './App.css';
 
 const url = 'http://localhost:8080/'
@@ -12,10 +12,7 @@ function App() {
 
   useEffect(() => {
     fetchUser(url).then(user => {
-      setUserId(user.playerId)
-      setUserName(user.name)
-      setGrid(user.grid)
-      setFleet(user.Fleet)
+      setUserData(user, setUserId, setUserName, setGrid, setFleet)
     })
   }, [])
 
