@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { fetchUser, setUserData } from '../../Utils.js'
 import './App.css';
+import NameBar from '../NameBar/NameBar.js'
 
 const url = 'http://localhost:8080/'
 
@@ -18,7 +19,10 @@ function App() {
 
   return (
     <div className="App">
+      <NameBar name={userName}
+               changeName={setUserName}/>
       <p>{userId}</p>
+      <p>Welcome {userName}</p>
     </div>
   );
 }
