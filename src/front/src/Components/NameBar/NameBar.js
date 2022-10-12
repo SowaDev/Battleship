@@ -9,7 +9,7 @@ export default function NameBar({ name, changeName }) {
   }
 
   return (
-      <input type='text' value={name} onChange={handleChange}>
+      <input type='text' value={name} placeholder='Enter your name' onChange={handleChange}>
       </input>
   )
 }
