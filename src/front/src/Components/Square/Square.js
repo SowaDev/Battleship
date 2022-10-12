@@ -1,9 +1,10 @@
 import React from 'react'
 import './Square.css'
 
-function Square({ coordinates, ship, wasShot, isRestricted, test }) {
+function Square({ coordinates, ship, wasShot, isRestricted }) {
   return (
-    <div className='Square'></div>
+    <div className='Square'>
+    </div>
   )
 }
 
