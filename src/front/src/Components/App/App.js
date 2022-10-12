@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { fetchUser, setUserData } from '../../Utils.js'
 import './App.css';
 import NameBar from '../NameBar/NameBar.js'
+import Grid from '../Grid/Grid.js';
 
 const url = 'http://localhost:8080/'
 
@@ -10,20 +11,24 @@ function App() {
   const [userName, setUserName] = useState('')
   const [grid, setGrid] = useState()
   const [fleet, setFleet] = useState()
+  const [battleMap, setBattleMap] = useState([])
 
   useEffect(() => {
     fetchUser(url).then(user => {
       setUserData(user, setUserId, setUserName, setGrid, setFleet)
+      setBattleMap(user.grid.battleMap)
     })
   }, [])
 
   return (
-    <div className="App">
-      <NameBar name={userName}
-               changeName={setUserName}/>
-      <p>{userId}</p>
-      <p>Welcome {userName}</p>
-    </div>
+    <>
+      <h1>Welcome to Battleship {userName}</h1>
+      <div className="App">
+        <NameBar name={userName}
+                  changeName={setUserName}/>
+        <Grid battleMap={battleMap} />
+      </div>
+    </>
   );
 }
 
