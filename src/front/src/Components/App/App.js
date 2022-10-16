@@ -14,6 +14,8 @@ function App() {
   const [fleet, setFleet] = useState([])
   const [battleMap, setBattleMap] = useState([])
 
+  const squareSize = 60;
+
   useEffect(() => {
     fetchUser(url).then(user => {
       setUserData(user, setUserId, setUserName, setGrid, setFleet)
@@ -28,8 +30,10 @@ function App() {
       <div className="App">
         {/* <NameBar name={userName}
                   changeName={setUserName}/> */}
-        <Fleet ships={fleet} />
-        <Grid battleMap={battleMap} />
+        <Fleet ships={fleet}
+               sizeUnit={squareSize} />
+        <Grid battleMap={battleMap}
+              squareSize={squareSize} />
       </div>
     </>
   );

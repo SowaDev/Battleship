@@ -1,13 +1,14 @@
 import React from 'react'
-import Square from '../Square/Square'
 import './Ship.css'
 
-export default function Ship(props) {
-  const { length, name } = props.ship;
+export default function Ship({ ship, sizeUnit}) {
+  const { length, name } = ship;
 
   return (
     <div className='Ship'
-         style={{ width: `${length*60}px` }}>
+         style={{ 
+           width: length*sizeUnit,
+           height: sizeUnit }}>
       {name}
     </div>
   )
