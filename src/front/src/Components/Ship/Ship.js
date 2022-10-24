@@ -6,6 +6,7 @@ export default function Ship({ ship, sizeUnit}) {
 
   return (
     <div className='Ship'
+         data-testid={name}
          style={{ 
            width: length*sizeUnit,
            height: sizeUnit }}>

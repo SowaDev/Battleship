@@ -4,7 +4,7 @@ import './Fleet.css'
 
 export default function Fleet({ ships, sizeUnit }) {
   return (
-    <div className='Fleet'>
+    <div className='Fleet' data-testid='fleet'>
       {
         ships.map(ship => {
           return <Ship ship={ship}

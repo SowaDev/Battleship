@@ -5,7 +5,7 @@ import './Grid.css'
 export default function Grid({ battleMap, squareSize }) {
   
   return (
-    <div className='BattleMap'>
+    <div className='BattleMap' data-testid='Grid'>
     {
     battleMap.map((row, i) => {
       return <div key={`row ${i}`}
