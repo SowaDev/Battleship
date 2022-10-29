@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Square from '../Square/Square'
 import './Grid.css'
 
-export default function Grid({ battleMap, squareSize }) {
+export default function Grid({ battleMap, squareSize, selectedShip, setSelectedShip, setFleet }) {
   
   return (
     <div className='BattleMap' data-testid='Grid'>
@@ -17,7 +17,10 @@ export default function Grid({ battleMap, squareSize }) {
                        wasShot={square.wasShot}
                        isRestricted={square.restricted}
                        key={`${i}, ${j}`}
-                       size={squareSize} />
+                       size={squareSize}
+                       selectedShip={selectedShip}
+                       setSelectedShip={setSelectedShip}
+                       setFleet={setFleet} />
       })
     }
       </div>

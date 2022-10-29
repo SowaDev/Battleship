@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchUser, setUserData } from '../../Utils.js'
+import { fetchUser } from '../../Utils.js'
 import './App.css';
 import NameBar from '../NameBar/NameBar.js'
 import Grid from '../Grid/Grid.js';
@@ -13,12 +13,13 @@ function App() {
   const [grid, setGrid] = useState()
   const [fleet, setFleet] = useState([])
   const [battleMap, setBattleMap] = useState([])
+  const [selectedShip, setSelectedShip] = useState()
 
   const squareSize = 60;
 
   useEffect(() => {
     fetchUser(url).then(user => {
-      setUserData(user, setUserId, setUserName, setGrid, setFleet)
+      setUserName(user.name)
       setBattleMap(user.grid.battleMap)
       setFleet(user.fleet)
     })
@@ -31,9 +32,14 @@ function App() {
         {/* <NameBar name={userName}
                   changeName={setUserName}/> */}
         <Fleet ships={fleet}
-               sizeUnit={squareSize} />
+               sizeUnit={squareSize}
+               selectedShip={selectedShip}
+               setSelectedShip={setSelectedShip} />
         <Grid battleMap={battleMap}
-              squareSize={squareSize} />
+              squareSize={squareSize}
+              selectedShip={selectedShip}
+              setSelectedShip={setSelectedShip}
+              setFleet={setFleet} />
       </div>
     </>
   );

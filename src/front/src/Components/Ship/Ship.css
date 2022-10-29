@@ -1,6 +1,6 @@
 .Ship {
   display: flex;
-  background-color:darkolivegreen;
+  /* background-color:darkolivegreen; */
   justify-content: center;
   align-items: center;
 }
