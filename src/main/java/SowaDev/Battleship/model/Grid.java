@@ -15,7 +15,7 @@ public class Grid {
         this.battleMap = new Square[SIZE][SIZE];
         for(int i = 0; i < SIZE; i++){
             for(int j = 0; j < SIZE; j++)
-                this.battleMap[i][j] = new Square(j, i);
+                this.battleMap[i][j] = new Square(i, j);
         }
     }
 
