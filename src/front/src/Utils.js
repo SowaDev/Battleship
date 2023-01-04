@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const fetchUser = async(url) => {
+export const fetchUser = async (url) => {
   try {
     const response = await axios.get(url)
     return response.data
@@ -9,7 +9,13 @@ export const fetchUser = async(url) => {
   }
 }
 
-export const setUserData = (userData, setUserId, setUserName, setGrid, setFleet) => {
+export const setUserData = (
+  userData,
+  setUserId,
+  setUserName,
+  setGrid,
+  setFleet
+) => {
   setUserId(userData.playerId)
   setUserName(userData.name)
   setGrid(userData.grid)

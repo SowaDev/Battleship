@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react'
 import Square from '../Square'
 
 const coordinates = {
-  x:1,
-  y:5
+  x: 1,
+  y: 5,
 }
 
 test('renders with correct height', () => {

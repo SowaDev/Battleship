@@ -3,7 +3,7 @@ import Ship from '../Ship'
 
 const mockShip = {
   name: 'Battleship',
-  length: 4
+  length: 4,
 }
 const size = 60
 

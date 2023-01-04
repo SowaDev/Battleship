@@ -1,15 +1,19 @@
 import React from 'react'
-import './NameBar.css';
+import './NameBar.css'
 
 export default function NameBar({ name, changeName }) {
-  const handleChange = event => {
+  const handleChange = (event) => {
     event.preventDefault()
     let name = event.target.value
     changeName(name)
   }
 
   return (
-      <input type='text' value={name} placeholder='Enter your name' onChange={handleChange}>
-      </input>
+    <input
+      type="text"
+      value={name}
+      placeholder="Enter your name"
+      onChange={handleChange}
+    ></input>
   )
 }
