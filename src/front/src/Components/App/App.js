@@ -20,7 +20,11 @@ function App() {
   useEffect(() => {
     fetchUser(url).then((user) => {
       setUserName(user.name)
-      setBattleMap(user.grid.battleMap)
+      setBattleMap(
+        user.grid.battleMap.map((row) => {
+          return row.map((square) => ({ ...square, color: 'gray' }))
+        })
+      )
       setFleet(user.fleet)
     })
   }, [])
@@ -43,6 +47,7 @@ function App() {
           selectedShip={selectedShip}
           setSelectedShip={setSelectedShip}
           setFleet={setFleet}
+          setBattleMap={setBattleMap}
         />
       </div>
     </>

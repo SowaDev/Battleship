@@ -8,7 +8,30 @@ export default function Grid({
   selectedShip,
   setSelectedShip,
   setFleet,
+  setBattleMap,
 }) {
+  const colorSquares = (x, y, length, vertical) => {
+    let newBattleMap = [...battleMap]
+    for (let i = 0; i < length; i++) {
+      if ((vertical && x + i > 9) || (!vertical && y + i > 9)) break
+      let square = vertical ? newBattleMap[x + i][y] : newBattleMap[x][y + i]
+      if ((vertical && x + length > 10) || (!vertical && y + length > 10))
+        square.color = 'red'
+      else square.color = 'lightblue'
+    }
+    setBattleMap(newBattleMap)
+  }
+
+  const uncolorSquares = (x, y, length, vertical) => {
+    let newBattleMap = [...battleMap]
+    for (let i = 0; i < length; i++) {
+      if ((vertical && x + i > 9) || (!vertical && y + i > 9)) break
+      let square = vertical ? newBattleMap[x + i][y] : newBattleMap[x][y + i]
+      square.color = 'gray'
+    }
+    setBattleMap(newBattleMap)
+  }
+
   return (
     <div className="BattleMap" data-testid="Grid">
       {battleMap.map((row, i) => {
@@ -18,14 +41,14 @@ export default function Grid({
               return (
                 <Square
                   coordinates={square.coordinates}
-                  ship={square.ship}
-                  wasShot={square.wasShot}
-                  isRestricted={square.restricted}
+                  x={square.coordinates.x}
+                  y={square.coordinates.y}
                   key={`${i}, ${j}`}
                   size={squareSize}
                   selectedShip={selectedShip}
-                  setSelectedShip={setSelectedShip}
-                  setFleet={setFleet}
+                  color={square.color}
+                  colorSquares={colorSquares}
+                  uncolorSquares={uncolorSquares}
                 />
               )
             })}

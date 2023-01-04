@@ -3,60 +3,29 @@ import './Square.css'
 import { placeShip } from '../../Utils'
 
 function Square({
+  x,
+  y,
   coordinates,
-  ship,
-  wasShot,
-  isRestricted,
   size,
   selectedShip,
-  setSelectedShip,
-  setFleet,
+  color,
+  colorSquares,
+  uncolorSquares,
 }) {
-  const colorSquares = (length, color, coordinates) => {
-    let x = coordinates.x,
-      y = coordinates.y
-    let vertical = selectedShip.vertical
-    for (let i = 0; i < length; i++) {
-      if ((vertical && y + i > 9) || (!vertical && x + i > 9)) return
-      let square = vertical
-        ? document.getElementById(`x${x}y${y + i}`)
-        : document.getElementById(`x${x + i}y${y}`)
-      if ((vertical && y + length > 10) || (!vertical && x + length > 10))
-        square.style.backgroundColor = 'red'
-      else square.style.backgroundColor = color
-    }
-  }
-
-  const uncolorSquares = (length, color, coordinates) => {
-    let x = coordinates.x,
-      y = coordinates.y
-    for (let i = 0; i < length; i++) {
-      if (
-        (selectedShip.vertical && y + i > 9) ||
-        (!selectedShip.vertical && x + i > 9)
-      )
-        return
-      let square = selectedShip.vertical
-        ? document.getElementById(`x${x}y${y + i}`)
-        : document.getElementById(`x${x + i}y${y}`)
-      square.style.backgroundColor = color
-    }
-  }
-
   const handleEnter = () => {
-    colorSquares(selectedShip.length, 'lightblue', coordinates)
+    colorSquares(x, y, selectedShip.length, selectedShip.vertical)
   }
 
   const handleLeave = () => {
-    uncolorSquares(selectedShip.length, 'gray', coordinates)
+    uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
   }
 
   const handleRightClick = (e) => {
     e.preventDefault()
     if (!selectedShip) return
-    uncolorSquares(selectedShip.length, 'gray', coordinates)
+    uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
     selectedShip.vertical = !selectedShip.vertical
-    colorSquares(selectedShip.length, 'lightblue', coordinates)
+    colorSquares(x, y, selectedShip.length, selectedShip.vertical)
   }
 
   return (
@@ -70,6 +39,7 @@ function Square({
       style={{
         height: size,
         width: size,
+        backgroundColor: color,
       }}
     ></div>
   )
