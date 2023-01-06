@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 @SessionAttributes("player")
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class GameController {
     private final ShipPlacingService shipPlacingService;
     private final BattleshipService battleshipService;
