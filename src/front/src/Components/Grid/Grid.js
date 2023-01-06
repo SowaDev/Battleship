@@ -15,11 +15,25 @@ export default function Grid({
     for (let i = 0; i < length; i++) {
       if ((vertical && x + i > 9) || (!vertical && y + i > 9)) break
       let square = vertical ? newBattleMap[x + i][y] : newBattleMap[x][y + i]
-      if ((vertical && x + length > 10) || (!vertical && y + length > 10))
+      if (
+        (vertical && x + length > 10) ||
+        (!vertical && y + length > 10) ||
+        checkForShip(x, y, length, vertical)
+      )
         square.color = 'red'
       else square.color = 'lightblue'
     }
     setBattleMap(newBattleMap)
+  }
+
+  const checkForShip = (x, y, length, vertical) => {
+    for (let i = 0; i < length; i++) {
+      if ((vertical && x + i > 9) || (!vertical && y + i > 9)) break
+      let square = vertical ? battleMap[x + i][y] : battleMap[x][y + i]
+      if (square.ship) {
+        return true
+      }
+    }
   }
 
   const uncolorSquares = (x, y, length, vertical) => {
@@ -27,7 +41,8 @@ export default function Grid({
     for (let i = 0; i < length; i++) {
       if ((vertical && x + i > 9) || (!vertical && y + i > 9)) break
       let square = vertical ? newBattleMap[x + i][y] : newBattleMap[x][y + i]
-      square.color = 'gray'
+      if (square.ship) square.color = 'lightblue'
+      else square.color = 'gray'
     }
     setBattleMap(newBattleMap)
   }
