@@ -11,6 +11,7 @@ function Square({
   color,
   colorSquares,
   uncolorSquares,
+  setSelectedShip,
 }) {
   const handleEnter = () => {
     colorSquares(x, y, selectedShip.length, selectedShip.vertical)
@@ -28,6 +29,12 @@ function Square({
     colorSquares(x, y, selectedShip.length, selectedShip.vertical)
   }
 
+  const handleClick = async (e) => {
+    if (!selectedShip) return
+    let result = await placeShip(x, y, selectedShip)
+    setSelectedShip(null)
+  }
+
   return (
     <div
       className="Square"
@@ -36,6 +43,7 @@ function Square({
       onMouseEnter={selectedShip ? handleEnter : undefined}
       onMouseLeave={selectedShip ? handleLeave : undefined}
       onContextMenu={handleRightClick}
+      onClick={handleClick}
       style={{
         height: size,
         width: size,

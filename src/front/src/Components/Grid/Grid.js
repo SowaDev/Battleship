@@ -7,7 +7,7 @@ export default function Grid({
   squareSize,
   selectedShip,
   setSelectedShip,
-  setFleet,
+  setSail,
   setBattleMap,
 }) {
   const colorSquares = (x, y, length, vertical) => {
@@ -49,6 +49,8 @@ export default function Grid({
                   color={square.color}
                   colorSquares={colorSquares}
                   uncolorSquares={uncolorSquares}
+                  setSelectedShip={setSelectedShip}
+                  setSail={setSail}
                 />
               )
             })}
