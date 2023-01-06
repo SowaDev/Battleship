@@ -26,7 +26,7 @@ public class ShipPlacingService {
     }
 
     public String placeShip(Player player, ShipPlacement shipPlacement) {
-        Ship ship = player.getFleet().get(shipPlacement.getShipId());
+        Ship ship = player.getFleet().stream().filter(boat -> boat.getName().equals(shipPlacement.getShipName())).findFirst().get();
         Grid grid = player.getGrid();
         String placementResult = isPossibleToPlaceShip(ship, grid, shipPlacement.getCoordinatesList());
         if(placementResult.equals("ok")) {
@@ -92,7 +92,7 @@ public class ShipPlacingService {
                     Coordinates newCoordinates = ship.isVertical() ? new Coordinates(x + i, y) : new Coordinates(x, y + i);
                     ship.getPlacement().add(newCoordinates);
                 }
-                placeShip(player, new ShipPlacement(player.getFleet().indexOf(ship), ship.getPlacement()));
+                placeShip(player, new ShipPlacement(ship.getName(), ship.getPlacement()));
             }
         }
         return player.getGrid();
