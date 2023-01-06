@@ -12,6 +12,7 @@ function Square({
   colorSquares,
   uncolorSquares,
   setSelectedShip,
+  setSail,
 }) {
   const handleEnter = () => {
     colorSquares(x, y, selectedShip.length, selectedShip.vertical)
@@ -32,6 +33,8 @@ function Square({
   const handleClick = async (e) => {
     if (!selectedShip) return
     let result = await placeShip(x, y, selectedShip)
+    console.log(result)
+    if (result === 'ok') setSail()
     setSelectedShip(null)
   }
 

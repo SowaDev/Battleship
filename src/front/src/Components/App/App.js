@@ -29,6 +29,14 @@ function App() {
     })
   }, [])
 
+  const setSail = () => {
+    let updatedFleet = fleet.map((ship) => {
+      if (ship === selectedShip) ship.setSail = true
+      return ship
+    })
+    setFleet(updatedFleet)
+  }
+
   return (
     <>
       <h1>Welcome to Battleship {userName}</h1>
@@ -46,8 +54,8 @@ function App() {
           squareSize={squareSize}
           selectedShip={selectedShip}
           setSelectedShip={setSelectedShip}
-          setFleet={setFleet}
           setBattleMap={setBattleMap}
+          setSail={setSail}
         />
       </div>
     </>
