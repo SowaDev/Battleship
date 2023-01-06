@@ -9,6 +9,6 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class ShipPlacement {
-    private int shipId;
+    private String shipName;
     private List<Coordinates> coordinatesList;
 }
