@@ -46,7 +46,7 @@ public class ShipPlacingService {
             placementResult = "Coordinates don't match ship length. Logic error.";
         for(Coordinates coordinates : coordinatesList){
             int x = coordinates.getX(), y = coordinates.getY();
-            if(x >= 10 || y >= 10)
+            if(x >= size || y >= size)
                 placementResult = "Out of bounds";
             else if(grid.getBattleMap()[x][y].getShip() != null)
                 placementResult = "You can't place ship on top of another";
@@ -71,7 +71,7 @@ public class ShipPlacingService {
                 endY = coordinatesList.get(coordinatesList.size() - 1).getY();
         for(int i = startX - 1; i <= endX + 1; i++) {
             for (int j = startY - 1; j <= endY + 1; j++) {
-                if(i >= 0 && i < 10 && j >= 0 && j < 10)
+                if(i >= 0 && i < size && j >= 0 && j < size)
                     grid.getBattleMap()[i][j].setRestricted(!isBeingRemoved);
             }
         }
@@ -86,8 +86,8 @@ public class ShipPlacingService {
             while(!ship.isSetSail()){
                 ship.setPlacement(new ArrayList<>());
                 ship.setVertical(rand.nextBoolean());
-                int x = ship.isVertical() ? rand.nextInt(10 - ship.getLength()) : rand.nextInt(10);
-                int y = ship.isVertical() ? rand.nextInt(10) : rand.nextInt(10 - ship.getLength());
+                int x = ship.isVertical() ? rand.nextInt(size - ship.getLength()) : rand.nextInt(size);
+                int y = ship.isVertical() ? rand.nextInt(size) : rand.nextInt(size - ship.getLength());
                 for(int i = 0; i < ship.getLength(); i++) {
                     Coordinates newCoordinates = ship.isVertical() ? new Coordinates(x + i, y) : new Coordinates(x, y + i);
                     ship.getPlacement().add(newCoordinates);
