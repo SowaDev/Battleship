@@ -22,7 +22,10 @@ function App() {
       setUserName(user.name)
       setBattleMap(
         user.grid.battleMap.map((row) => {
-          return row.map((square) => ({ ...square, color: 'gray' }))
+          return row.map((square) => ({
+            ...square,
+            color: square.ship ? 'lightblue' : 'gray',
+          }))
         })
       )
       setFleet(user.fleet)
