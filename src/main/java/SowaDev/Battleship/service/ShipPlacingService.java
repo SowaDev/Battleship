@@ -56,8 +56,8 @@ public class ShipPlacingService {
         return placementResult;
     }
 
-    public Grid removeShip(Player player, int shipId){
-        Ship ship = player.getFleet().get(shipId);
+    public Grid removeShip(Player player, String shipName){
+        Ship ship = player.getFleet().stream().filter(boat -> boat.getName().equals(shipName)).findFirst().get();
         Grid grid = player.getGrid();
         markSquares(grid, null, ship.getPlacement(), true);
         ship.setPlacement(null);

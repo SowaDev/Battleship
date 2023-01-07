@@ -57,8 +57,8 @@ public class GameController {
     }
 
     @DeleteMapping()
-    public Grid removeShip(@RequestBody int shipId, @ModelAttribute("player") Player player){
-        return shipPlacingService.removeShip(player, shipId);
+    public Grid removeShip(@RequestBody String shipName, @ModelAttribute("player") Player player){
+        return shipPlacingService.removeShip(player, shipName);
     }
 
     @PutMapping("/randomPlacement")
