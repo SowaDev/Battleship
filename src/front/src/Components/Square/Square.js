@@ -35,6 +35,7 @@ function Square({
     let result = await placeShip(x, y, selectedShip)
     console.log(result)
     if (result === 'ok') setSail()
+    else uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
     setSelectedShip(null)
   }
 
