@@ -1,6 +1,6 @@
 import React from 'react'
 import './Square.css'
-import { placeShip } from '../../Utils'
+import { placeShip, removeShip } from '../../Utils'
 
 function Square({
   x,
@@ -22,12 +22,15 @@ function Square({
     uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
   }
 
-  const handleRightClick = (e) => {
-    e.preventDefault()
-    if (!selectedShip) return
+  const rotateShip = () => {
     uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
     selectedShip.vertical = !selectedShip.vertical
     colorSquares(x, y, selectedShip.length, selectedShip.vertical)
+  }
+
+  const handleRightClick = (e) => {
+    e.preventDefault()
+    if (selectedShip) rotateShip()
   }
 
   const handleClick = async (e) => {
