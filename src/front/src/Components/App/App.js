@@ -20,17 +20,21 @@ function App() {
   useEffect(() => {
     fetchUser(url).then((user) => {
       setUserName(user.name)
-      setBattleMap(
-        user.grid.battleMap.map((row) => {
-          return row.map((square) => ({
-            ...square,
-            color: square.ship ? 'lightblue' : 'gray',
-          }))
-        })
-      )
+      mountBattleMap(user.grid)
       setFleet(user.fleet)
     })
   }, [])
+
+  const mountBattleMap = (grid) => {
+    setBattleMap(
+      grid.battleMap.map((row) => {
+        return row.map((square) => ({
+          ...square,
+          color: square.ship ? 'lightblue' : 'gray',
+        }))
+      })
+    )
+  }
 
   const setSail = (bool) => {
     let updatedFleet = fleet.map((ship) => {
@@ -58,6 +62,7 @@ function App() {
           selectedShip={selectedShip}
           setSelectedShip={setSelectedShip}
           setBattleMap={setBattleMap}
+          mountBattleMap={mountBattleMap}
           setSail={setSail}
         />
       </div>
