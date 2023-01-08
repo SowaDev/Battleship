@@ -9,6 +9,7 @@ export default function Grid({
   setSelectedShip,
   setSail,
   setBattleMap,
+  mountBattleMap,
 }) {
   const colorSquares = (x, y, length, vertical) => {
     let newBattleMap = [...battleMap]
@@ -67,7 +68,7 @@ export default function Grid({
                   uncolorSquares={uncolorSquares}
                   setSelectedShip={setSelectedShip}
                   setSail={setSail}
-                  setBattleMap={setBattleMap}
+                  mountBattleMap={mountBattleMap}
                 />
               )
             })}
