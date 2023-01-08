@@ -44,12 +44,10 @@ function Square({
 
   const handleClick = async (e) => {
     if (!selectedShip) return
-    let response = await placeShip(x, y, selectedShip)
-    console.log(response)
-    if (response.placementResult === 'ok') {
-      setBattleMap(response.grid)
-      setSail(true)
-    } else uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
+    let result = await placeShip(x, y, selectedShip)
+    console.log(result)
+    if (result === 'ok') setSail(true)
+    else uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
     setSelectedShip(null)
   }
 
