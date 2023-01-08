@@ -25,8 +25,9 @@ public class ShipPlacingService {
         return fleet;
     }
 
-    public String placeShip(Player player, ShipPlacement shipPlacement) {
-        Ship ship = player.getFleet().stream().filter(boat -> boat.getName().equals(shipPlacement.getShipName())).findFirst().get();
+    public PlacementResponse placeShip(Player player, ShipPlacement shipPlacement) {
+        Ship ship = player.getFleet().stream().
+                filter(boat -> boat.getName().equals(shipPlacement.getShipName())).findFirst().get();
         Grid grid = player.getGrid();
         String placementResult = isPossibleToPlaceShip(ship, grid, shipPlacement.getCoordinatesList());
         if(placementResult.equals("ok")) {
@@ -36,7 +37,7 @@ public class ShipPlacingService {
             ship.setSetSail(true);
             ship.setPlacement(shipPlacement.getCoordinatesList());
         }
-        return placementResult;
+        return new PlacementResponse(placementResult, grid);
     }
 
 

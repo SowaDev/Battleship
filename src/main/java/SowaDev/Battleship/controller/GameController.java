@@ -50,7 +50,7 @@ public class GameController {
     }
 
     @PutMapping
-    public String placeShip(@RequestBody ShipPlacement shipPlacement,
+    public PlacementResponse placeShip(@RequestBody ShipPlacement shipPlacement,
                             @ModelAttribute("player") Player player){
         //        model.addAttribute("player", player);
         return shipPlacingService.placeShip(player, shipPlacement);
