@@ -9,10 +9,12 @@ function Square({
   size,
   selectedShip,
   color,
+  ship,
   colorSquares,
   uncolorSquares,
   setSelectedShip,
   setSail,
+  setBattleMap,
 }) {
   const handleEnter = () => {
     colorSquares(x, y, selectedShip.length, selectedShip.vertical)
@@ -28,9 +30,16 @@ function Square({
     colorSquares(x, y, selectedShip.length, selectedShip.vertical)
   }
 
-  const handleRightClick = (e) => {
+  const handleRightClick = async (e) => {
     e.preventDefault()
     if (selectedShip) rotateShip()
+    else if (ship) {
+      let battleMap = await removeShip(ship.name)
+      setBattleMap(battleMap)
+      setSail(false)
+      uncolorSquares(x, y, ship.length, ship.vertical)
+      setSelectedShip(null)
+    }
   }
 
   const handleClick = async (e) => {

@@ -55,17 +55,19 @@ export default function Grid({
             {row.map((square, j) => {
               return (
                 <Square
+                  key={`${i}, ${j}`}
                   coordinates={square.coordinates}
                   x={square.coordinates.x}
                   y={square.coordinates.y}
-                  key={`${i}, ${j}`}
+                  color={square.color}
+                  ship={square.ship}
                   size={squareSize}
                   selectedShip={selectedShip}
-                  color={square.color}
                   colorSquares={colorSquares}
                   uncolorSquares={uncolorSquares}
                   setSelectedShip={setSelectedShip}
                   setSail={setSail}
+                  setBattleMap={setBattleMap}
                 />
               )
             })}

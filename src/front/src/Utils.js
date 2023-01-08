@@ -44,6 +44,20 @@ export const fetchPlaceShip = async (coordinatesList, shipName) => {
   }
 }
 
+export const removeShip = async (shipName) => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: baseUrl,
+      data: shipName,
+      withCredentials: true,
+    })
+    return response.data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const setUserData = (
   userData,
   setUserId,
