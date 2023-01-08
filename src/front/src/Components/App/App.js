@@ -36,9 +36,11 @@ function App() {
     )
   }
 
-  const setSail = (bool) => {
+  const setSail = (bool, targetShip) => {
     let updatedFleet = fleet.map((ship) => {
-      if (ship === selectedShip) ship.setSail = bool
+      if (ship.name === targetShip.name) {
+        ship.setSail = bool
+      }
       return ship
     })
     setFleet(updatedFleet)
