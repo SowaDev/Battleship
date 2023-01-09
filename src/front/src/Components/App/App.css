@@ -16,7 +16,18 @@ h1 {
   text-align: center;
   background-color: burlywood;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   justify-content: space-around;
-  /* flex-direction: column; */
+}
+
+.Center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }

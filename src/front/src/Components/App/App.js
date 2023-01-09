@@ -4,6 +4,7 @@ import './App.css'
 import NameBar from '../NameBar/NameBar.js'
 import Grid from '../Grid/Grid.js'
 import Fleet from '../Fleet/Fleet.js'
+import Hint from '../Hint/Hint.js'
 
 const url = 'http://localhost:8080/'
 
@@ -50,23 +51,27 @@ function App() {
     <>
       <h1>Welcome to Battleship {userName}</h1>
       <div className="App">
-        {/* <NameBar name={userName}
-                  changeName={setUserName}/> */}
-        <Fleet
-          ships={fleet}
-          sizeUnit={squareSize}
-          selectedShip={selectedShip}
-          setSelectedShip={setSelectedShip}
-        />
-        <Grid
-          battleMap={battleMap}
-          squareSize={squareSize}
-          selectedShip={selectedShip}
-          setSelectedShip={setSelectedShip}
-          setBattleMap={setBattleMap}
-          mountBattleMap={mountBattleMap}
-          setSail={setSail}
-        />
+        <div className="Center">
+          <Hint />
+          <Grid
+            battleMap={battleMap}
+            squareSize={squareSize}
+            selectedShip={selectedShip}
+            setSelectedShip={setSelectedShip}
+            setBattleMap={setBattleMap}
+            mountBattleMap={mountBattleMap}
+            setSail={setSail}
+          />
+        </div>
+        <div className="Right">
+          <NameBar name={userName} changeName={setUserName} />
+          <Fleet
+            ships={fleet}
+            sizeUnit={squareSize}
+            selectedShip={selectedShip}
+            setSelectedShip={setSelectedShip}
+          />
+        </div>
       </div>
     </>
   )
