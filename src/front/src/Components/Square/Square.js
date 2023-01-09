@@ -1,6 +1,6 @@
 import React from 'react'
 import './Square.css'
-import { placeShip, removeShip } from '../../Utils'
+import { putShip, removeShip } from '../../Utils'
 
 function Square({
   x,
@@ -43,7 +43,7 @@ function Square({
 
   const handleClick = async (e) => {
     if (!selectedShip) return
-    let response = await placeShip(x, y, selectedShip)
+    let response = await putShip(x, y, selectedShip)
     if (response.placementResult === 'ok') {
       mountBattleMap(response.grid)
       setSail(true, selectedShip)

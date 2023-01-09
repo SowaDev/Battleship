@@ -15,7 +15,7 @@ export const fetchUser = async (url) => {
   }
 }
 
-export const placeShip = async (x, y, selectedShip) => {
+export const putShip = async (x, y, selectedShip) => {
   let coordinatesList = []
   for (let i = 0; i < selectedShip.length; i++) {
     coordinatesList.push({
@@ -23,10 +23,10 @@ export const placeShip = async (x, y, selectedShip) => {
       y: selectedShip.vertical ? y : y + i,
     })
   }
-  return await fetchPlaceShip(coordinatesList, selectedShip.name)
+  return await fetchPutShip(coordinatesList, selectedShip.name)
 }
 
-export const fetchPlaceShip = async (coordinatesList, shipName) => {
+export const fetchPutShip = async (coordinatesList, shipName) => {
   let shipPlacement = {
     shipName: shipName,
     coordinatesList: coordinatesList,
