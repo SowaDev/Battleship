@@ -1,7 +1,7 @@
 import React from 'react'
 import Square from '../Square/Square'
 import './Grid.css'
-
+import { putShip, removeShip } from '../../Utils'
 export default function Grid({
   battleMap,
   squareSize,
@@ -26,7 +26,6 @@ export default function Grid({
     }
     setBattleMap(newBattleMap)
   }
-
   const checkForShip = (x, y, length, vertical) => {
     for (let i = 0; i < length; i++) {
       if ((vertical && x + i > 9) || (!vertical && y + i > 9)) break
@@ -36,7 +35,6 @@ export default function Grid({
       }
     }
   }
-
   const uncolorSquares = (x, y, length, vertical) => {
     let newBattleMap = [...battleMap]
     for (let i = 0; i < length; i++) {
@@ -47,7 +45,20 @@ export default function Grid({
     }
     setBattleMap(newBattleMap)
   }
-
+  const placeShip = async (x, y) => {
+    let response = await putShip(x, y, selectedShip)
+    if (response.placementResult === 'ok') {
+      mountBattleMap(response.grid)
+      setSail(true, selectedShip)
+    } else uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
+    setSelectedShip(null)
+  }
+  const takeShipOut = async (ship) => {
+    let newBattleMap = await removeShip(ship.name)
+    mountBattleMap(newBattleMap)
+    setSail(false, ship)
+    setSelectedShip(null)
+  }
   return (
     <div className="BattleMap" data-testid="Grid">
       {battleMap.map((row, i) => {
@@ -66,9 +77,8 @@ export default function Grid({
                   selectedShip={selectedShip}
                   colorSquares={colorSquares}
                   uncolorSquares={uncolorSquares}
-                  setSelectedShip={setSelectedShip}
-                  setSail={setSail}
-                  mountBattleMap={mountBattleMap}
+                  placeShip={placeShip}
+                  takeShipOut={takeShipOut}
                 />
               )
             })}

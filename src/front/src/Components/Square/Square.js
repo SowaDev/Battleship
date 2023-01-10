@@ -1,6 +1,5 @@
 import React from 'react'
 import './Square.css'
-import { putShip, removeShip } from '../../Utils'
 
 function Square({
   x,
@@ -12,9 +11,8 @@ function Square({
   ship,
   colorSquares,
   uncolorSquares,
-  setSelectedShip,
-  setSail,
-  mountBattleMap,
+  placeShip,
+  takeShipOut,
 }) {
   const handleEnter = () => {
     colorSquares(x, y, selectedShip.length, selectedShip.vertical)
@@ -33,22 +31,12 @@ function Square({
   const handleRightClick = async (e) => {
     e.preventDefault()
     if (selectedShip) rotateShip()
-    else if (ship) {
-      let battleMap = await removeShip(ship.name)
-      mountBattleMap(battleMap)
-      setSail(false, ship)
-      setSelectedShip(null)
-    }
+    else if (ship) takeShipOut(ship)
   }
 
   const handleClick = async (e) => {
     if (!selectedShip) return
-    let response = await putShip(x, y, selectedShip)
-    if (response.placementResult === 'ok') {
-      mountBattleMap(response.grid)
-      setSail(true, selectedShip)
-    } else uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
-    setSelectedShip(null)
+    placeShip(x, y)
   }
 
   return (
