@@ -3,6 +3,7 @@ import Square from '../Square/Square'
 import './Grid.css'
 import Hint from '../Hint/Hint'
 import { putShip, removeShip } from '../../Utils'
+import { useState } from 'react'
 export default function Grid({
   battleMap,
   squareSize,
@@ -12,6 +13,9 @@ export default function Grid({
   setBattleMap,
   mountBattleMap,
 }) {
+  const [hint, setHint] = useState()
+  const [hintChanges, setHintChanges] = useState(0)
+
   const colorSquares = (x, y, length, vertical) => {
     let newBattleMap = [...battleMap]
     for (let i = 0; i < length; i++) {
@@ -51,7 +55,11 @@ export default function Grid({
     if (response.placementResult === 'ok') {
       mountBattleMap(response.grid)
       setSail(true, selectedShip)
-    } else uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
+    } else {
+      uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
+      setHintChanges((prev) => prev + 1)
+      setHint(response.placementResult)
+    }
     setSelectedShip(null)
   }
   const takeShipOut = async (ship) => {
@@ -62,7 +70,7 @@ export default function Grid({
   }
   return (
     <div className="Grid">
-      <Hint />
+      <Hint hint={hint} hintChanges={hintChanges} />
       <div className="BattleMap" data-testid="Grid">
         {battleMap.map((row, i) => {
           return (
