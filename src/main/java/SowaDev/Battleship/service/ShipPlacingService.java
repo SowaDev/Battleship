@@ -44,13 +44,15 @@ public class ShipPlacingService {
     public String isPossibleToPlaceShip(Ship ship, Grid grid, List<Coordinates> coordinatesList) {
         String placementResult = "ok";
         if(ship.getLength() != coordinatesList.size())
-            placementResult = "Coordinates don't match ship length. Logic error.";
+            return "Coordinates don't match ship length. Logic error.";
         for(Coordinates coordinates : coordinatesList){
             int x = coordinates.getX(), y = coordinates.getY();
             if(x >= size || y >= size)
-                placementResult = "Out of bounds";
-            else if(grid.getBattleMap()[x][y].getShip() != null)
+                return placementResult = "Out of bounds";
+            else if(grid.getBattleMap()[x][y].getShip() != null){
                 placementResult = "You can't place ship on top of another";
+                break;
+            }
             else if(grid.getBattleMap()[x][y].isRestricted())
                 placementResult = "You've put a ship too close to another. There must be one square gap between ships";
         }
