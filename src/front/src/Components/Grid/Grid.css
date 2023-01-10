@@ -10,3 +10,9 @@
   width: fit-content;
   border: 1px solid black;
 }
+
+.Grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -1,6 +1,7 @@
 import React from 'react'
 import Square from '../Square/Square'
 import './Grid.css'
+import Hint from '../Hint/Hint'
 import { putShip, removeShip } from '../../Utils'
 export default function Grid({
   battleMap,
@@ -60,31 +61,34 @@ export default function Grid({
     setSelectedShip(null)
   }
   return (
-    <div className="BattleMap" data-testid="Grid">
-      {battleMap.map((row, i) => {
-        return (
-          <div key={`row ${i}`} className="row">
-            {row.map((square, j) => {
-              return (
-                <Square
-                  key={`${i}, ${j}`}
-                  coordinates={square.coordinates}
-                  x={square.coordinates.x}
-                  y={square.coordinates.y}
-                  color={square.color}
-                  ship={square.ship}
-                  size={squareSize}
-                  selectedShip={selectedShip}
-                  colorSquares={colorSquares}
-                  uncolorSquares={uncolorSquares}
-                  placeShip={placeShip}
-                  takeShipOut={takeShipOut}
-                />
-              )
-            })}
-          </div>
-        )
-      })}
+    <div className="Grid">
+      <Hint />
+      <div className="BattleMap" data-testid="Grid">
+        {battleMap.map((row, i) => {
+          return (
+            <div key={`row ${i}`} className="row">
+              {row.map((square, j) => {
+                return (
+                  <Square
+                    key={`${i}, ${j}`}
+                    coordinates={square.coordinates}
+                    x={square.coordinates.x}
+                    y={square.coordinates.y}
+                    color={square.color}
+                    ship={square.ship}
+                    size={squareSize}
+                    selectedShip={selectedShip}
+                    colorSquares={colorSquares}
+                    uncolorSquares={uncolorSquares}
+                    placeShip={placeShip}
+                    takeShipOut={takeShipOut}
+                  />
+                )
+              })}
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }

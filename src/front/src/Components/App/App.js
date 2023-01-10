@@ -51,18 +51,15 @@ function App() {
     <>
       <h1>Welcome to Battleship {userName}</h1>
       <div className="App">
-        <div className="Center">
-          <Hint />
-          <Grid
-            battleMap={battleMap}
-            squareSize={squareSize}
-            selectedShip={selectedShip}
-            setSelectedShip={setSelectedShip}
-            setBattleMap={setBattleMap}
-            mountBattleMap={mountBattleMap}
-            setSail={setSail}
-          />
-        </div>
+        <Grid
+          battleMap={battleMap}
+          squareSize={squareSize}
+          selectedShip={selectedShip}
+          setSelectedShip={setSelectedShip}
+          setBattleMap={setBattleMap}
+          mountBattleMap={mountBattleMap}
+          setSail={setSail}
+        />
         <div className="Right">
           <NameBar name={userName} changeName={setUserName} />
           <Fleet
