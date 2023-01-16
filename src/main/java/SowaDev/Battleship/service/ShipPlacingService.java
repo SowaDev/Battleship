@@ -85,6 +85,8 @@ public class ShipPlacingService {
 
     public Grid putShipsAtRandom(Player player) {
         Random rand = new Random();
+        if(areAllShipsSetSail(player))
+            removeAllShips(player);
         for(Ship ship : player.getFleet()){
             while(!ship.isSetSail()){
                 ship.setPlacement(new ArrayList<>());
@@ -109,5 +111,13 @@ public class ShipPlacingService {
             ship.setSetSail(false);
         }
         return grid;
+    }
+
+    public boolean areAllShipsSetSail(Player player){
+        for(Ship ship : player.getFleet()){
+            if(!ship.isSetSail())
+                return false;
+        }
+        return true;
     }
 }
