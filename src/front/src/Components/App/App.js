@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchUser } from '../../Utils.js'
+import { fetchUser, randomPlacement, removeShips } from '../../Utils.js'
 import './App.css'
 import NameBar from '../NameBar/NameBar.js'
 import Grid from '../Grid/Grid.js'
@@ -47,6 +47,26 @@ function App() {
     setFleet(updatedFleet)
   }
 
+  const putShipsAtRandom = async () => {
+    let updatedGrid = await randomPlacement()
+    let updatedFleet = fleet.map((ship) => {
+      ship.setSail = true
+      return ship
+    })
+    mountBattleMap(updatedGrid)
+    setFleet(updatedFleet)
+  }
+
+  const removeAllShips = async () => {
+    let updatedGrid = await removeShips()
+    let updatedFleet = fleet.map((ship) => {
+      ship.setSail = false
+      return ship
+    })
+    mountBattleMap(updatedGrid)
+    setFleet(updatedFleet)
+  }
+
   return (
     <>
       <h1>Welcome to Battleship {userName}</h1>
@@ -68,6 +88,14 @@ function App() {
             selectedShip={selectedShip}
             setSelectedShip={setSelectedShip}
           />
+          <div className="PlacementButtons">
+            <button className="Random" onClick={putShipsAtRandom}>
+              Put all ships at random
+            </button>
+            <button className="Random" onClick={removeAllShips}>
+              Remove all ships
+            </button>
+          </div>
         </div>
       </div>
     </>

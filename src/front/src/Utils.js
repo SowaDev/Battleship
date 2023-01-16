@@ -58,6 +58,32 @@ export const removeShip = async (shipName) => {
   }
 }
 
+export const randomPlacement = async () => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: baseUrl + 'randomPlacement',
+      withCredentials: true,
+    })
+    return response.data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export const removeShips = async () => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: baseUrl + 'removeShips',
+      withCredentials: true,
+    })
+    return response.data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const setUserData = (
   userData,
   setUserId,
