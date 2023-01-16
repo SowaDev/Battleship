@@ -66,6 +66,11 @@ public class GameController {
         return shipPlacingService.putShipsAtRandom(player);
     }
 
+    @PutMapping("/removeShips")
+    public Grid removeAllShips(@ModelAttribute("player") Player player){
+        return shipPlacingService.removeAllShips(player);
+    }
+
     @PostMapping("/play")
     public Game play(@ModelAttribute("player") Player player,
                      @RequestBody String name){

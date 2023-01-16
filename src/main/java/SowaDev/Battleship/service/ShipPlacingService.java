@@ -100,4 +100,14 @@ public class ShipPlacingService {
         }
         return player.getGrid();
     }
+
+    public Grid removeAllShips(Player player){
+        Grid grid = player.getGrid();
+        for(Ship ship : player.getFleet()){
+            markSquares(grid, null, ship.getPlacement(), true);
+            ship.setPlacement(null);
+            ship.setSetSail(false);
+        }
+        return grid;
+    }
 }
