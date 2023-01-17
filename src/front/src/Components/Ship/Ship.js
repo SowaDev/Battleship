@@ -9,7 +9,7 @@ export default function Ship({ ship, sizeUnit, moveShip, selectedShip }) {
   }
 
   return (
-    <div
+    <button
       className="Ship"
       data-testid={name}
       onClick={handleClick}
@@ -20,6 +20,6 @@ export default function Ship({ ship, sizeUnit, moveShip, selectedShip }) {
       }}
     >
       {name}
-    </div>
+    </button>
   )
 }
