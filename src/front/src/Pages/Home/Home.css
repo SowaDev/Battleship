@@ -50,3 +50,55 @@ button:hover {
   transform: scale(1.1);
   box-shadow: 2px 4px 50px 0 rgba(0, 0, 0, 0.25);
 }
+body,
+html,
+#root {
+  height: 100%;
+}
+
+h1 {
+  background-color: burlywood;
+  text-align: center;
+}
+
+.App {
+  height: 100%;
+  width: 100%;
+  padding: 5% 10% 0% 10%;
+  text-align: center;
+  background-color: burlywood;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.Right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.PlacementButtons {
+  margin-top: 100px;
+  height: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+button {
+  height: 50px;
+  width: 200px;
+  border: 1px solid black;
+  box-shadow: 2px 4px 10px 0 rgba(0, 0, 0, 0.25);
+  transition: 300ms;
+}
+.Random {
+  margin-top: 10px;
+  background-color: slateblue;
+}
+
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 2px 4px 50px 0 rgba(0, 0, 0, 0.25);
+}

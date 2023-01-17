@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
-import { fetchUser, randomPlacement, removeShips } from '../../Utils.js'
-import './App.css'
-import NameBar from '../NameBar/NameBar.js'
-import Grid from '../Grid/Grid.js'
-import Fleet from '../Fleet/Fleet.js'
-import Hint from '../Hint/Hint.js'
+import { fetchUser, randomPlacement, removeShips } from '../../Utils'
+import './Home.css'
+import NameBar from '../../Components/NameBar/NameBar.js'
+import Grid from '../../Components/Grid/Grid.js'
+import Fleet from '../../Components/Fleet/Fleet.js'
 
 const url = 'http://localhost:8080/'
 
-function App() {
+function Home() {
   const [userId, setUserId] = useState('')
   const [userName, setUserName] = useState('')
   const [grid, setGrid] = useState()
@@ -102,4 +101,4 @@ function App() {
   )
 }
 
-export default App
+export default Home

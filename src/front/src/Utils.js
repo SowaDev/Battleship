@@ -84,6 +84,19 @@ export const removeShips = async () => {
   }
 }
 
+export const play = async () => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: baseUrl + 'play',
+      withCredentials: true,
+    })
+    return response.data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const setUserData = (
   userData,
   setUserId,
