@@ -105,6 +105,8 @@ public class ShipPlacingService {
 
     public Grid removeAllShips(Player player){
         Grid grid = player.getGrid();
+        if(!areAllShipsSetSail(player))
+            return grid;
         for(Ship ship : player.getFleet()){
             markSquares(grid, null, ship.getPlacement(), true);
             ship.setPlacement(null);
