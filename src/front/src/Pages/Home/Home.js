@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
-import { fetchUser, randomPlacement, removeShips } from '../../Utils'
+import { fetchUser, randomPlacement, removeShips, play } from '../../Utils'
+import { Link, useNavigate } from 'react-router-dom'
 import './Home.css'
 import NameBar from '../../Components/NameBar/NameBar.js'
 import Grid from '../../Components/Grid/Grid.js'
 import Fleet from '../../Components/Fleet/Fleet.js'
+import ButtonLink from '../../Components/ButtonLink/ButtonLink'
 
 const url = 'http://localhost:8080/'
 
@@ -14,6 +16,7 @@ function Home() {
   const [fleet, setFleet] = useState([])
   const [battleMap, setBattleMap] = useState([])
   const [selectedShip, setSelectedShip] = useState()
+  const [fleetReady, setFleetReady] = useState(false)
 
   const squareSize = 60
 
@@ -22,8 +25,13 @@ function Home() {
       setUserName(user.name)
       mountBattleMap(user.grid)
       setFleet(user.fleet)
+      setFleetReady(checkFleetReady())
     })
   }, [])
+
+  useEffect(() => {
+    setFleetReady(checkFleetReady())
+  }, [fleet])
 
   const mountBattleMap = (grid) => {
     setBattleMap(
@@ -66,6 +74,10 @@ function Home() {
     setFleet(updatedFleet)
   }
 
+  const checkFleetReady = () => {
+    return !fleet.some((ship) => ship.setSail === false)
+  }
+
   return (
     <>
       <h1>Welcome to Battleship {userName}</h1>
@@ -95,6 +107,7 @@ function Home() {
               Remove all ships
             </button>
           </div>
+          <ButtonLink fleetReady={fleetReady} />
         </div>
       </div>
     </>

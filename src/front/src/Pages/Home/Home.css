@@ -50,3 +50,8 @@ button:hover {
   transform: scale(1.1);
   box-shadow: 2px 4px 50px 0 rgba(0, 0, 0, 0.25);
 }
+
+.Play:hover {
+  transform: scale(1);
+  box-shadow: 2px 4px 10px 0 rgba(0, 0, 0, 0.25);
+}
