@@ -37,18 +37,6 @@ public class GameController {
         return player;
     }
 
-    @GetMapping("/gridtostring")
-    public String gridToString(@ModelAttribute("player") Player player){
-        return player.getGrid().toString();
-    }
-
-    @PutMapping("/setname/{name}")
-    public String setPlayerName(@PathVariable String name,
-                                @ModelAttribute("player") Player player){
-        player.setName(name);
-        return player.getName();
-    }
-
     @PutMapping
     public PlacementResponse placeShip(@RequestBody ShipPlacement shipPlacement,
                             @ModelAttribute("player") Player player){
