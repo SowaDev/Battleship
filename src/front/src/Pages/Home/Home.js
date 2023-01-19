@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
-import { fetchUser, randomPlacement, removeShips, play } from '../../Utils'
-import { Link, useNavigate } from 'react-router-dom'
+import {
+  fetchUser,
+  randomPlacement,
+  removeShips,
+  checkFleetReady,
+} from '../../Utils'
 import './Home.css'
 import NameBar from '../../Components/NameBar/NameBar.js'
 import Grid from '../../Components/Grid/Grid.js'
@@ -25,12 +29,12 @@ function Home() {
       setUserName(user.name)
       mountBattleMap(user.grid)
       setFleet(user.fleet)
-      setFleetReady(checkFleetReady())
+      setFleetReady(checkFleetReady(user.fleet))
     })
   }, [])
 
   useEffect(() => {
-    setFleetReady(checkFleetReady())
+    setFleetReady(checkFleetReady(fleet))
   }, [fleet])
 
   const mountBattleMap = (grid) => {
@@ -72,10 +76,6 @@ function Home() {
     })
     mountBattleMap(updatedGrid)
     setFleet(updatedFleet)
-  }
-
-  const checkFleetReady = () => {
-    return !fleet.some((ship) => ship.setSail === false)
   }
 
   return (

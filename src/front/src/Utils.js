@@ -97,6 +97,10 @@ export const play = async () => {
   }
 }
 
+export const checkFleetReady = (fleet) => {
+  return !fleet.some((ship) => ship.setSail === false)
+}
+
 export const setUserData = (
   userData,
   setUserId,
