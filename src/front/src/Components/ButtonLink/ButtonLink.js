@@ -1,6 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { play } from '../../Utils'
 
-export default function ButtonLink({ fleetReady }) {
+export default function ButtonLink({ fleetReady, userName }) {
+  const navigate = useNavigate()
+
   const handleEnter = (e) => {
     if (fleetReady) {
       e.target.style.transform = 'scale(1.1)'
@@ -15,6 +19,13 @@ export default function ButtonLink({ fleetReady }) {
     }
   }
 
+  const handleClick = async () => {
+    if (fleetReady) {
+      let newGame = await play(userName)
+      navigate('/game', { state: newGame })
+    }
+  }
+
   return (
     <button
       className="Play"
@@ -23,6 +34,7 @@ export default function ButtonLink({ fleetReady }) {
       }}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
+      onClick={handleClick}
     >
       Play
     </button>

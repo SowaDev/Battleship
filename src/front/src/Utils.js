@@ -84,11 +84,12 @@ export const removeShips = async () => {
   }
 }
 
-export const play = async () => {
+export const play = async (userName) => {
   try {
     const response = await axios({
       method: 'post',
       url: baseUrl + 'play',
+      data: userName,
       withCredentials: true,
     })
     return response.data

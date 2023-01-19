@@ -107,7 +107,7 @@ function Home() {
               Remove all ships
             </button>
           </div>
-          <ButtonLink fleetReady={fleetReady} />
+          <ButtonLink fleetReady={fleetReady} userName={userName} />
         </div>
       </div>
     </>
