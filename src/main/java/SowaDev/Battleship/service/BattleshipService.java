@@ -9,10 +9,14 @@ import java.util.NoSuchElementException;
 @Service
 public class BattleshipService {
 
-    public Game playerMove(Shot shot) {
-        if(!GameStorage.getInstance().getGames().containsKey(shot.getGameId()))
+    public Game getGame(String gameId) {
+        if(!GameStorage.getInstance().getGames().containsKey(gameId))
             throw new NoSuchElementException("Game not found");
-        Game game = GameStorage.getInstance().getGames().get(shot.getGameId());
+        return GameStorage.getInstance().getGames().get(gameId);
+    }
+
+    public Game playerMove(Shot shot) {
+        Game game = getGame(shot.getGameId());
         checkIfCorrect(game, shot.getPlayerId());
         Player opponent = getOpponent(game, shot.getPlayerId());
         Square square = opponent.getGrid().getBattleMap()[shot.getCoordinates().getX()][shot.getCoordinates().getY()];
