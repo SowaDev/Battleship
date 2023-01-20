@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { play } from '../../../Utils'
 
-export default function ButtonLink({ fleetReady, userName }) {
+export default function ButtonLink({ fleetReady, userName, updateHint }) {
   const navigate = useNavigate()
 
   const handleEnter = (e) => {
@@ -23,7 +23,8 @@ export default function ButtonLink({ fleetReady, userName }) {
     if (fleetReady && userName !== '') {
       let newGame = await play(userName)
       navigate('/game', { state: newGame })
-    }
+    } else if (fleetReady && userName === '')
+      updateHint('Before the game begins please enter your name')
   }
 
   return (
