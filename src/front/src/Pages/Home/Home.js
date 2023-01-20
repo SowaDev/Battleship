@@ -6,17 +6,15 @@ import {
   checkFleetReady,
 } from '../../Utils'
 import './Home.css'
-import NameBar from '../../Components/NameBar/NameBar.js'
-import Grid from '../../Components/Grid/Grid.js'
-import Fleet from '../../Components/Fleet/Fleet.js'
-import ButtonLink from '../../Components/ButtonLink/ButtonLink'
+import NameBar from '../../Components/HomeComponents/NameBar/NameBar'
+import Grid from '../../Components/HomeComponents/Grid/Grid.js'
+import Fleet from '../../Components/HomeComponents/Fleet/Fleet.js'
+import ButtonLink from '../../Components/HomeComponents/ButtonLink/ButtonLink'
 
 const url = 'http://localhost:8080/'
 
 function Home() {
-  const [userId, setUserId] = useState('')
   const [userName, setUserName] = useState('')
-  const [grid, setGrid] = useState()
   const [fleet, setFleet] = useState([])
   const [battleMap, setBattleMap] = useState([])
   const [selectedShip, setSelectedShip] = useState()

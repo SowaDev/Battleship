@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { play } from '../../Utils'
+import { play } from '../../../Utils'
 
 export default function ButtonLink({ fleetReady, userName }) {
   const navigate = useNavigate()
@@ -20,7 +20,7 @@ export default function ButtonLink({ fleetReady, userName }) {
   }
 
   const handleClick = async () => {
-    if (fleetReady) {
+    if (fleetReady && userName !== '') {
       let newGame = await play(userName)
       navigate('/game', { state: newGame })
     }

@@ -1,9 +1,10 @@
 import React from 'react'
 import Square from '../Square/Square'
 import './Grid.css'
-import Hint from '../Hint/Hint'
-import { putShip, removeShip } from '../../Utils'
+import Hint from '../../SharedComponents/Hint/Hint'
+import { putShip, removeShip } from '../../../Utils'
 import { useState } from 'react'
+
 export default function Grid({
   battleMap,
   squareSize,
@@ -31,6 +32,7 @@ export default function Grid({
     }
     setBattleMap(newBattleMap)
   }
+
   const checkForShip = (x, y, length, vertical) => {
     for (let i = 0; i < length; i++) {
       if ((vertical && x + i > 9) || (!vertical && y + i > 9)) break
@@ -40,6 +42,7 @@ export default function Grid({
       }
     }
   }
+
   const uncolorSquares = (x, y, length, vertical) => {
     let newBattleMap = [...battleMap]
     for (let i = 0; i < length; i++) {
@@ -50,6 +53,7 @@ export default function Grid({
     }
     setBattleMap(newBattleMap)
   }
+
   const placeShip = async (x, y) => {
     let response = await putShip(x, y, selectedShip)
     if (response.placementResult === 'ok') {
@@ -62,12 +66,14 @@ export default function Grid({
     }
     setSelectedShip(null)
   }
+
   const takeShipOut = async (ship) => {
     let newBattleMap = await removeShip(ship.name)
     mountBattleMap(newBattleMap)
     setSail(false, ship)
     setSelectedShip(null)
   }
+
   return (
     <div className="Grid">
       <Hint hint={hint} hintChanges={hintChanges} />
