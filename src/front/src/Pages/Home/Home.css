@@ -25,6 +25,12 @@ h1 {
   justify-content: space-around;
 }
 
+.Center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .Right {
   display: flex;
   flex-direction: column;

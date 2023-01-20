@@ -1,9 +1,7 @@
 import React from 'react'
 import Square from '../Square/Square'
 import './Grid.css'
-import Hint from '../../SharedComponents/Hint/Hint'
 import { putShip, removeShip } from '../../../Utils'
-import { useState } from 'react'
 
 export default function Grid({
   battleMap,
@@ -13,10 +11,8 @@ export default function Grid({
   setSail,
   setBattleMap,
   mountBattleMap,
+  updateHint,
 }) {
-  const [hint, setHint] = useState()
-  const [hintChanges, setHintChanges] = useState(0)
-
   const colorSquares = (x, y, length, vertical) => {
     let newBattleMap = [...battleMap]
     for (let i = 0; i < length; i++) {
@@ -61,8 +57,7 @@ export default function Grid({
       setSail(true, selectedShip)
     } else {
       uncolorSquares(x, y, selectedShip.length, selectedShip.vertical)
-      setHintChanges((prev) => prev + 1)
-      setHint(response.placementResult)
+      updateHint(response.placementResult)
     }
     setSelectedShip(null)
   }
@@ -75,34 +70,31 @@ export default function Grid({
   }
 
   return (
-    <div className="Grid">
-      <Hint hint={hint} hintChanges={hintChanges} />
-      <div className="BattleMap" data-testid="Grid">
-        {battleMap.map((row, i) => {
-          return (
-            <div key={`row ${i}`} className="row">
-              {row.map((square, j) => {
-                return (
-                  <Square
-                    key={`${i}, ${j}`}
-                    coordinates={square.coordinates}
-                    x={square.coordinates.x}
-                    y={square.coordinates.y}
-                    color={square.color}
-                    ship={square.ship}
-                    size={squareSize}
-                    selectedShip={selectedShip}
-                    colorSquares={colorSquares}
-                    uncolorSquares={uncolorSquares}
-                    placeShip={placeShip}
-                    takeShipOut={takeShipOut}
-                  />
-                )
-              })}
-            </div>
-          )
-        })}
-      </div>
+    <div className="BattleMap" data-testid="Grid">
+      {battleMap.map((row, i) => {
+        return (
+          <div key={`row ${i}`} className="row">
+            {row.map((square, j) => {
+              return (
+                <Square
+                  key={`${i}, ${j}`}
+                  coordinates={square.coordinates}
+                  x={square.coordinates.x}
+                  y={square.coordinates.y}
+                  color={square.color}
+                  ship={square.ship}
+                  size={squareSize}
+                  selectedShip={selectedShip}
+                  colorSquares={colorSquares}
+                  uncolorSquares={uncolorSquares}
+                  placeShip={placeShip}
+                  takeShipOut={takeShipOut}
+                />
+              )
+            })}
+          </div>
+        )
+      })}
     </div>
   )
 }

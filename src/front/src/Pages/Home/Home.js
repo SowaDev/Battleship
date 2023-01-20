@@ -10,6 +10,7 @@ import NameBar from '../../Components/HomeComponents/NameBar/NameBar'
 import Grid from '../../Components/HomeComponents/Grid/Grid.js'
 import Fleet from '../../Components/HomeComponents/Fleet/Fleet.js'
 import ButtonLink from '../../Components/HomeComponents/ButtonLink/ButtonLink'
+import Hint from '../../Components/SharedComponents/Hint/Hint'
 
 const url = 'http://localhost:8080/'
 
@@ -19,6 +20,8 @@ function Home() {
   const [battleMap, setBattleMap] = useState([])
   const [selectedShip, setSelectedShip] = useState()
   const [fleetReady, setFleetReady] = useState(false)
+  const [hint, setHint] = useState()
+  const [hintChanges, setHintChanges] = useState(0)
 
   const squareSize = 60
 
@@ -76,19 +79,28 @@ function Home() {
     setFleet(updatedFleet)
   }
 
+  const updateHint = (hint) => {
+    setHintChanges((prev) => prev + 1)
+    setHint(hint)
+  }
+
   return (
     <div className="Home">
       <h1>Welcome to Battleship {userName}</h1>
       <div className="App">
-        <Grid
-          battleMap={battleMap}
-          squareSize={squareSize}
-          selectedShip={selectedShip}
-          setSelectedShip={setSelectedShip}
-          setBattleMap={setBattleMap}
-          mountBattleMap={mountBattleMap}
-          setSail={setSail}
-        />
+        <div className="Center">
+          <Hint hint={hint} hintChanges={hintChanges} />
+          <Grid
+            battleMap={battleMap}
+            squareSize={squareSize}
+            selectedShip={selectedShip}
+            setSelectedShip={setSelectedShip}
+            setBattleMap={setBattleMap}
+            mountBattleMap={mountBattleMap}
+            setSail={setSail}
+            updateHint={updateHint}
+          />
+        </div>
         <div className="Right">
           <NameBar name={userName} changeName={setUserName} />
           <Fleet
