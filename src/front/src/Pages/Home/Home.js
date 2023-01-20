@@ -77,7 +77,7 @@ function Home() {
   }
 
   return (
-    <>
+    <div className="Home">
       <h1>Welcome to Battleship {userName}</h1>
       <div className="App">
         <Grid
@@ -108,7 +108,7 @@ function Home() {
           <ButtonLink fleetReady={fleetReady} userName={userName} />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

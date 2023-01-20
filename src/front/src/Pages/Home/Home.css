@@ -9,12 +9,17 @@ h1 {
   text-align: center;
 }
 
-.App {
+.Home {
   height: 100%;
+  width: 100%;
+  background-color: burlywood;
+}
+
+.App {
+  height: 90%;
   width: 100%;
   padding: 5% 10% 0% 10%;
   text-align: center;
-  background-color: burlywood;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
