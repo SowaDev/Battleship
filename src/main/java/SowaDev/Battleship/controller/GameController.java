@@ -5,10 +5,11 @@ import SowaDev.Battleship.service.GameService;
 import SowaDev.Battleship.service.ShipPlacingService;
 import SowaDev.Battleship.model.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
-@SessionAttributes("player")
+@SessionAttributes({"player", "game"})
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class GameController {
@@ -60,10 +61,20 @@ public class GameController {
     }
 
     @PostMapping("/play")
-    public Game play(@ModelAttribute("player") Player player,
+    public Game play(@ModelAttribute("player") Player player, Model model,
                      @RequestBody String name){
-        return gameService.play(player, name);
+        Game game = gameService.play(player, name);
+        model.addAttribute("game", game);
+        return game;
     }
+
+    @GetMapping("/game")
+    public Game getGame(Model model) {
+        Game game = (Game) model.getAttribute("game");
+        String gameId = game != null ? game.getGameId() : null;
+        return battleshipService.getGame(gameId);
+    }
+
 
     @PostMapping("/shoot")
     public Game shoot(@RequestBody Shot shot){
