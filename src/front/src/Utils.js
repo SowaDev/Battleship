@@ -98,6 +98,19 @@ export const play = async (userName) => {
   }
 }
 
+export const fetchGame = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: baseUrl + 'game',
+      withCredentials: true,
+    })
+    return response.data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const checkFleetReady = (fleet) => {
   return !fleet.some((ship) => ship.setSail === false)
 }
