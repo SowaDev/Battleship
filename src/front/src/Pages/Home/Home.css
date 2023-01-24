@@ -12,17 +12,21 @@ h1 {
 .Home {
   height: 100%;
   width: 100%;
-  background-color: burlywood;
+  background-color: #455456;
 }
 
 .App {
-  height: 90%;
+  height: 100%;
   width: 100%;
   padding: 5% 10% 0% 10%;
   text-align: center;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  background-image: url('background4_enlarged.jpg');
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .Center {
