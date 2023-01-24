@@ -24,7 +24,7 @@ h1 {
   flex-direction: row;
   justify-content: space-around;
   background-image: url('background4_enlarged.jpg');
-  background-size: 100% auto;
+  background-size: 101% auto;
   background-repeat: no-repeat;
   background-position: center;
 }
