@@ -43,7 +43,9 @@ function Home() {
       grid.battleMap.map((row) => {
         return row.map((square) => ({
           ...square,
-          color: square.ship ? 'lightblue' : 'gray',
+          color: square.ship
+            ? 'rgba(230, 202, 50, 0.8)'
+            : 'rgba(51, 71, 80, 0.1)',
         }))
       })
     )
@@ -86,7 +88,6 @@ function Home() {
 
   return (
     <div className="Home">
-      <h1>Welcome to Battleship {userName}</h1>
       <div className="App">
         <div className="Center">
           <Hint hint={hint} hintChanges={hintChanges} />

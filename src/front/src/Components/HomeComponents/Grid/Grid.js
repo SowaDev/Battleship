@@ -23,8 +23,8 @@ export default function Grid({
         (!vertical && y + length > 10) ||
         checkForShip(x, y, length, vertical)
       )
-        square.color = 'red'
-      else square.color = 'lightblue'
+        square.color = 'rgba(217, 67, 48, 0.8)'
+      else square.color = 'rgba(230, 202, 50, 0.8)'
     }
     setBattleMap(newBattleMap)
   }
@@ -44,8 +44,8 @@ export default function Grid({
     for (let i = 0; i < length; i++) {
       if ((vertical && x + i > 9) || (!vertical && y + i > 9)) break
       let square = vertical ? newBattleMap[x + i][y] : newBattleMap[x][y + i]
-      if (square.ship) square.color = 'lightblue'
-      else square.color = 'gray'
+      if (square.ship) square.color = 'rgba(230, 202, 50, 0.8)'
+      else square.color = 'rgba(51, 71, 80, 0.1)'
     }
     setBattleMap(newBattleMap)
   }
