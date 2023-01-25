@@ -23,3 +23,4 @@ Battleship is a classic two-player strategy game where players place ships on a 
 ## Future development
 - React front-end - undergoing
 - Deployment on heroku
+- Adding a single player mode with AI opponent
