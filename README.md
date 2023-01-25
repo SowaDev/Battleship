@@ -1,4 +1,4 @@
-# Battleship-Spring
+# Battleship
 Battleship is a classic two-player strategy game where players place ships on a grid and take turns guessing the coordinates of the other player's ships. The goal is to sink all of the opponent's ships before they sink all of yours.
 
 ## Technologies
