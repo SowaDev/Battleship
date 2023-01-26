@@ -30,9 +30,11 @@ public class GameService {
         Game game;
         if(optionalGame.isPresent()) {
             game = optionalGame.get();
-            game.setPlayer2(player);
+            Player[] players = game.getPlayers();
+            players[1] = player;
+            game.setPlayers(players);
             game.setGameStatus(GameStatus.IN_PROGRESS);
-            game.setPlayerTurn(setRandomStarter(game.getPlayer1().getPlayerId(), game.getPlayer2().getPlayerId()));
+            game.setPlayerTurn(setRandomStarter(game.getPlayers()[0].getPlayerId(), game.getPlayers()[1].getPlayerId()));
         } else
             game = createGame(player);
         return game;

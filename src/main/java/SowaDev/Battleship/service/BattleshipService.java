@@ -4,6 +4,7 @@ import SowaDev.Battleship.model.*;
 import SowaDev.Battleship.storage.GameStorage;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 @Service
@@ -53,12 +54,10 @@ public class BattleshipService {
     }
 
     public Player getOpponent(Game game, String playerId){
-        Player opponent;
-        if(playerId.equals(game.getPlayer1().getPlayerId()))
-            opponent = game.getPlayer2();
-        else
-            opponent = game.getPlayer1();
-        return opponent;
+        return Arrays.stream(game.getPlayers())
+                .filter(player -> !player.getPlayerId().equals(playerId))
+                .findFirst()
+                .orElse(null);
     }
 
     public boolean isLost(Player player){
