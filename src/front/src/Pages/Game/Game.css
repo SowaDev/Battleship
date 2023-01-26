@@ -1,0 +1,13 @@
+.Map {
+  margin-top: 5%;
+  display: flex;
+  justify-content: space-around;
+  height: 80%;
+  width: 100%;
+}
+
+.Game {
+  height: 100%;
+  width: 100%;
+  background-color: burlywood;
+}
