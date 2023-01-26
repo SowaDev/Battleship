@@ -111,6 +111,22 @@ export const fetchGame = async () => {
   }
 }
 
+export const createOpponentBattleMap = () => {
+  let battleMap = []
+  for (let i = 0; i < 10; i++) {
+    let row = []
+    for (let j = 0; j < 10; j++) {
+      row.push({
+        x: i,
+        y: j,
+        wasShot: false,
+      })
+    }
+    battleMap.push(row)
+  }
+  return battleMap
+}
+
 export const checkFleetReady = (fleet) => {
   return !fleet.some((ship) => ship.setSail === false)
 }
