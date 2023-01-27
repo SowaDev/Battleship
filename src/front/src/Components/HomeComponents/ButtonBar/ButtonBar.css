@@ -1,0 +1,19 @@
+.ButtonBar {
+  width: 18vw;
+  height: 5vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 45 px;
+  min-width: 270px;
+}
+
+.buttonz {
+  height: 3vw;
+  width: 8vw;
+  text-align: center;
+  background-color: rgba(106, 90, 205, 0.7);
+  min-height: 45px;
+  min-width: 125px;
+}
