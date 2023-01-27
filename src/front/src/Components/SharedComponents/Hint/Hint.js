@@ -1,4 +1,3 @@
-import { getDefaultNormalizer } from '@testing-library/react'
 import React, { useEffect, useState } from 'react'
 import './Hint.css'
 

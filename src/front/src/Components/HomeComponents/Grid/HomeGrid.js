@@ -1,7 +1,8 @@
 import React from 'react'
 import Square from '../Square/HomeSquare'
 import './HomeGrid.css'
-import { putShip, removeShip } from '../../../Utils'
+import { removeShip } from '../../../Utils/BattleshipAPI'
+import { putShip } from '../../../Utils/Utils'
 
 export default function Grid({
   battleMap,

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { play } from '../../../Utils'
+import { play } from '../../../Utils/BattleshipAPI'
 import './ButtonLink.css'
 
 export default function ButtonLink({

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { fetchGame, createOpponentBattleMap } from '../../Utils'
+import { fetchGame } from '../../Utils/BattleshipAPI'
+import { createOpponentBattleMap } from '../../Utils/Utils'
 import Grid from '../../Components/GameComponents/Grid/GameGrid'
 import Square from '../../Components/GameComponents/Square/GameSquare'
 import './Game.css'
