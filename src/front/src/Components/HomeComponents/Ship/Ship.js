@@ -1,7 +1,13 @@
 import React from 'react'
 import './Ship.css'
 
-export default function Ship({ ship, sizeUnit, moveShip, selectedShip }) {
+export default function Ship({
+  ship,
+  setSail,
+  sizeUnit,
+  moveShip,
+  selectedShip,
+}) {
   const { length, name } = ship
 
   const handleClick = () => {
@@ -16,6 +22,7 @@ export default function Ship({ ship, sizeUnit, moveShip, selectedShip }) {
       style={{
         width: length * sizeUnit,
         height: sizeUnit,
+        visibility: setSail ? 'hidden' : 'visible',
         backgroundColor: selectedShip === ship ? 'indianred' : 'darkolivegreen',
       }}
     >

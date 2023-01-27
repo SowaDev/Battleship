@@ -19,7 +19,6 @@ export default function Fleet({
   return (
     <div className="Fleet" data-testid="fleet">
       {ships.map((ship) => {
-        if (ship.setSail) return null
         return (
           <Ship
             ship={ship}
@@ -28,6 +27,7 @@ export default function Fleet({
             moveShip={moveShip}
             selectedShip={selectedShip}
             setSelectedShip={setSelectedShip}
+            setSail={ship.setSail}
           />
         )
       })}
