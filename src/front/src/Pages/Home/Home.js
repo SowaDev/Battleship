@@ -7,7 +7,7 @@ import {
 } from '../../Utils'
 import './Home.css'
 import NameBar from '../../Components/HomeComponents/NameBar/NameBar'
-import Grid from '../../Components/HomeComponents/Grid/Grid.js'
+import Grid from '../../Components/HomeComponents/Grid/HomeGrid.js'
 import Fleet from '../../Components/HomeComponents/Fleet/Fleet.js'
 import ButtonLink from '../../Components/HomeComponents/ButtonLink/ButtonLink'
 import Hint from '../../Components/SharedComponents/Hint/Hint'
@@ -17,6 +17,7 @@ const url = 'http://localhost:8080/'
 
 function Home() {
   const [userName, setUserName] = useState('')
+  const [userId, setUserId] = useState('')
   const [fleet, setFleet] = useState([])
   const [battleMap, setBattleMap] = useState([])
   const [selectedShip, setSelectedShip] = useState()
@@ -27,6 +28,7 @@ function Home() {
   useEffect(() => {
     fetchUser(url).then((user) => {
       setUserName(user.name)
+      setUserId(user.playerId)
       mountBattleMap(user.grid)
       setFleet(user.fleet)
       setFleetReady(checkFleetReady(user.fleet))
@@ -115,6 +117,7 @@ function Home() {
             <ButtonLink
               fleetReady={fleetReady}
               userName={userName}
+              userId={userId}
               updateHint={updateHint}
             />
           </div>
