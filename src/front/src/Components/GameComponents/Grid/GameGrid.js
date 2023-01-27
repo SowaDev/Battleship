@@ -1,6 +1,6 @@
 import React from 'react'
-import Square from '../../GameComponents/Square/Square'
-import './Grid.css'
+import Square from '../Square/GameSquare'
+import './GameGrid.css'
 
 export default function Grid({ battleMap }) {
   return (

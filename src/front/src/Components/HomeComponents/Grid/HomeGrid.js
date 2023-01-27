@@ -1,6 +1,6 @@
 import React from 'react'
-import Square from '../Square/Square'
-import './Grid.css'
+import Square from '../Square/HomeSquare'
+import './HomeGrid.css'
 import { putShip, removeShip } from '../../../Utils'
 
 export default function Grid({
