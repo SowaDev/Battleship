@@ -11,6 +11,7 @@ import Grid from '../../Components/HomeComponents/Grid/Grid.js'
 import Fleet from '../../Components/HomeComponents/Fleet/Fleet.js'
 import ButtonLink from '../../Components/HomeComponents/ButtonLink/ButtonLink'
 import Hint from '../../Components/SharedComponents/Hint/Hint'
+import ButtonBar from '../../Components/HomeComponents/ButtonBar/ButtonBar'
 
 const url = 'http://localhost:8080/'
 
@@ -22,8 +23,6 @@ function Home() {
   const [fleetReady, setFleetReady] = useState(false)
   const [hint, setHint] = useState()
   const [hintChanges, setHintChanges] = useState(0)
-
-  const squareSize = 60
 
   useEffect(() => {
     fetchUser(url).then((user) => {
@@ -93,7 +92,6 @@ function Home() {
           <Hint hint={hint} hintChanges={hintChanges} />
           <Grid
             battleMap={battleMap}
-            squareSize={squareSize}
             selectedShip={selectedShip}
             setSelectedShip={setSelectedShip}
             setBattleMap={setBattleMap}
@@ -103,26 +101,23 @@ function Home() {
           />
         </div>
         <div className="Right">
-          <NameBar name={userName} changeName={setUserName} />
+          <ButtonBar
+            putShipsAtRandom={putShipsAtRandom}
+            removeAllShips={removeAllShips}
+          />
           <Fleet
             ships={fleet}
-            sizeUnit={squareSize}
             selectedShip={selectedShip}
             setSelectedShip={setSelectedShip}
           />
-          <div className="PlacementButtons">
-            <button className="Random" onClick={putShipsAtRandom}>
-              Put all ships at random
-            </button>
-            <button className="Random" onClick={removeAllShips}>
-              Remove all ships
-            </button>
+          <div className="BottomRight">
+            <NameBar name={userName} changeName={setUserName} />
+            <ButtonLink
+              fleetReady={fleetReady}
+              userName={userName}
+              updateHint={updateHint}
+            />
           </div>
-          <ButtonLink
-            fleetReady={fleetReady}
-            userName={userName}
-            updateHint={updateHint}
-          />
         </div>
       </div>
     </div>

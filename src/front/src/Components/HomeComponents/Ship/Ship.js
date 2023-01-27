@@ -1,15 +1,9 @@
 import React from 'react'
 import './Ship.css'
 
-export default function Ship({
-  ship,
-  setSail,
-  sizeUnit,
-  moveShip,
-  selectedShip,
-}) {
+export default function Ship({ ship, setSail, moveShip, selectedShip }) {
   const { length, name } = ship
-
+  const minSize = 42
   const handleClick = () => {
     moveShip(ship)
   }
@@ -20,10 +14,11 @@ export default function Ship({
       data-testid={name}
       onClick={handleClick}
       style={{
-        width: length * sizeUnit,
-        height: sizeUnit,
+        width: `${length * 3}vw`,
+        minWidth: minSize * length,
         visibility: setSail ? 'hidden' : 'visible',
-        backgroundColor: selectedShip === ship ? 'indianred' : 'darkolivegreen',
+        backgroundColor:
+          selectedShip === ship ? 'indianred' : 'rgba(230, 202, 50, 0.8)',
       }}
     >
       {name}

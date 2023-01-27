@@ -5,7 +5,6 @@ import { putShip, removeShip } from '../../../Utils'
 
 export default function Grid({
   battleMap,
-  squareSize,
   selectedShip,
   setSelectedShip,
   setSail,
@@ -70,7 +69,7 @@ export default function Grid({
   }
 
   return (
-    <div className="BattleMap" data-testid="Grid">
+    <div className="Grid" data-testid="Grid">
       {battleMap.map((row, i) => {
         return (
           <div key={`row ${i}`} className="row">
@@ -83,7 +82,6 @@ export default function Grid({
                   y={square.coordinates.y}
                   color={square.color}
                   ship={square.ship}
-                  size={squareSize}
                   selectedShip={selectedShip}
                   colorSquares={colorSquares}
                   uncolorSquares={uncolorSquares}

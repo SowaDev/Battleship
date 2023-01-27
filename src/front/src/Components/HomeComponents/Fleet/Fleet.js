@@ -2,12 +2,7 @@ import React from 'react'
 import Ship from '../Ship/Ship'
 import './Fleet.css'
 
-export default function Fleet({
-  ships,
-  sizeUnit,
-  selectedShip,
-  setSelectedShip,
-}) {
+export default function Fleet({ ships, selectedShip, setSelectedShip }) {
   const moveShip = (ship) => {
     if (selectedShip === ship) {
       setSelectedShip(null)
@@ -22,7 +17,6 @@ export default function Fleet({
         return (
           <Ship
             ship={ship}
-            sizeUnit={sizeUnit}
             key={ship.name}
             moveShip={moveShip}
             selectedShip={selectedShip}

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { play } from '../../../Utils'
+import './ButtonLink.css'
 
 export default function ButtonLink({ fleetReady, userName, updateHint }) {
   const navigate = useNavigate()

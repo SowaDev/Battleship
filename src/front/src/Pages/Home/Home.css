@@ -10,8 +10,8 @@ h1 {
 }
 
 .Home {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   background-color: #455456;
 }
 
@@ -24,41 +24,34 @@ h1 {
   flex-direction: row;
   justify-content: space-around;
   background-image: url('background4_enlarged.jpg');
-  background-size: 101% auto;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .Center {
+  margin-top: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .Right {
+  margin-top: 5%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  gap: 2vh;
 }
 
-.PlacementButtons {
-  margin-top: 100px;
-  height: 15%;
+.BottomRight {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
 }
 
 button {
-  height: 50px;
-  width: 200px;
   border: 1px solid black;
   box-shadow: 2px 4px 10px 0 rgba(0, 0, 0, 0.25);
-  transition: 300ms;
-}
-.Random {
-  margin-top: 10px;
-  background-color: slateblue;
+  transition: transform 300ms, box-shadow 300ms;
 }
 
 button:hover {

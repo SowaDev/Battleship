@@ -4,8 +4,6 @@ import './Square.css'
 function Square({
   x,
   y,
-  coordinates,
-  size,
   selectedShip,
   color,
   ship,
@@ -42,15 +40,12 @@ function Square({
   return (
     <div
       className="Square"
-      data-testid={`Square${coordinates.x}${coordinates.y}`}
-      id={`x${coordinates.x}y${coordinates.y}`}
+      data-testid={`Square${x}${y}`}
       onMouseEnter={selectedShip ? handleEnter : undefined}
       onMouseLeave={selectedShip ? handleLeave : undefined}
       onContextMenu={handleRightClick}
       onClick={handleClick}
       style={{
-        height: size,
-        width: size,
         backgroundColor: color,
       }}
     ></div>

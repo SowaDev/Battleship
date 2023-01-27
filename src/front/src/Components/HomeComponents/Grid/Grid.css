@@ -3,11 +3,12 @@
   justify-content: center;
 }
 
-.BattleMap {
-  margin: 0;
-  padding: 0;
-  height: fit-content;
-  width: fit-content;
+.Grid {
   border: 1px solid black;
   box-shadow: 4px 8px 20px 5px rgba(0, 0, 0, 0.25);
+  height: 30vw;
+  width: 30vw;
+  min-width: 420px;
+  min-height: 420px;
+  aspect-ratio: 1 / 1;
 }

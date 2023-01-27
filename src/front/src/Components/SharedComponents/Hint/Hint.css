@@ -1,10 +1,13 @@
 .Hints {
-  background-color: darkkhaki;
+  background-color: rgba(189, 183, 107, 0.8);
+  /* background-color: rgba(230, 202, 50, 0.8); */
   margin-bottom: 5%;
-  width: 500px;
-  height: 50px;
+  width: 25vw;
+  height: 3vw;
   box-shadow: 2px 4px 10px 0 rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 50px;
+  min-width: 350px;
 }
