@@ -119,7 +119,11 @@ export const createOpponentBattleMap = () => {
       row.push({
         x: i,
         y: j,
-        wasShot: false,
+        coordinates: {
+          x: i,
+          y: j,
+        },
+        status: 'NOT_SHOT',
       })
     }
     battleMap.push(row)

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { fetchGame, createOpponentBattleMap } from '../../Utils'
-import Grid from '../../Components/GameComponents/Grid/Grid'
-import Square from '../../Components/GameComponents/Square/Square'
+import Grid from '../../Components/GameComponents/Grid/GameGrid'
+import Square from '../../Components/GameComponents/Square/GameSquare'
 import './Game.css'
 
 export default function Game() {
@@ -12,32 +12,46 @@ export default function Game() {
   const [opponentBattleMap, setOpponentBattleMap] = useState([])
   const [opponentName, setOpponentName] = useState('')
   const [gameStatus, setGameStatus] = useState('')
+  const [gameId, setGameId] = useState('')
 
   useEffect(() => {
-    console.log(userId)
     fetchGame().then((game) => {
+      setGameId(game.gameId)
       setUserBattleMap(
         game.players.find((user) => user && user.playerId === userId).grid
           .battleMap
       )
       if (game.gameStatus === 'NEW') {
-        let opon = createOpponentBattleMap()
-        console.log(opon)
         setOpponentBattleMap(createOpponentBattleMap())
       } else {
-        setOpponentBattleMap(mountOpponentBattleMap())
+        let opponentBattleMap = game.players.find(
+          (user) => user && user.playerId !== userId
+        ).grid.battleMap
+        setOpponentBattleMap(mountOpponentBattleMap(opponentBattleMap))
       }
     })
   }, [])
 
-  const mountOpponentBattleMap = (grid) => {}
+  const mountOpponentBattleMap = (grid) => {
+    return grid.map((row) => {
+      return row.map((square) => {
+        return {
+          coordinates: {
+            x: square.coordinates.x,
+            y: square.coordinates.y,
+          },
+          status: square.status,
+        }
+      })
+    })
+  }
 
   return (
     <div className="Game">
-      <h1>{userId}</h1>
+      <h1>{gameId}</h1>
       <div className="Map">
-        <Grid battleMap={userBattleMap} />
-        <Grid battleMap={opponentBattleMap} />
+        <Grid battleMap={userBattleMap} opponent={false} />
+        <Grid battleMap={opponentBattleMap} opponent={true} />
       </div>
     </div>
   )
