@@ -9,10 +9,11 @@ public class Square {
 //    private int x, y;
     private Coordinates coordinates;
     private Ship ship;
-    private boolean wasShot;
+    private SquareStatus status;
     private boolean isRestricted;
 
     public Square(int x, int y){
         this.coordinates = new Coordinates(x, y);
+        this.status = SquareStatus.NOT_SHOT;
     }
 }

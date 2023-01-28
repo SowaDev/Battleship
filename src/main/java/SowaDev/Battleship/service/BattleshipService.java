@@ -33,15 +33,16 @@ public class BattleshipService {
     }
 
     public void shoot(Square square, Game game, Player opponent){
-        if(square.isWasShot())
+        if(!square.getStatus().equals(SquareStatus.NOT_SHOT))
             throw new IllegalStateException("You've already shot here");
-        else
-            square.setWasShot(true);
         if(square.getShip() != null) {
             square.getShip().setLife(square.getShip().getLife() - 1);
+            square.setStatus(SquareStatus.HIT);
             checkWinningConditions(game, opponent);
-        } else
+        } else {
+            square.setStatus(SquareStatus.MISS);
             game.setPlayerTurn(opponent.getPlayerId());
+        }
     }
 
     public void checkIfCorrect(Game game, String playerId){
