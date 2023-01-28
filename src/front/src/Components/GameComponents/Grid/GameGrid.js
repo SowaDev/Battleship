@@ -2,7 +2,7 @@ import React from 'react'
 import Square from '../Square/GameSquare'
 import './GameGrid.css'
 
-export default function Grid({ battleMap, opponent }) {
+export default function Grid({ battleMap, opponent, shoot }) {
   return (
     <div className="GameGrid">
       <div className="GameBattleMap">
@@ -13,11 +13,11 @@ export default function Grid({ battleMap, opponent }) {
                 return (
                   <Square
                     key={`${i}, ${j}`}
-                    x={square.coordinates.x}
-                    y={square.coordinates.y}
+                    coordinates={square.coordinates}
                     status={square.status}
                     ship={opponent ? null : square.ship}
                     opponent={opponent}
+                    shoot={shoot}
                   />
                 )
               })}

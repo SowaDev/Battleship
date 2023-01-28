@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import SockJsClient from 'react-stomp'
-import { fetchGame } from '../../Utils/BattleshipAPI'
+import { fetchGame, sendShot } from '../../Utils/BattleshipAPI'
 import { createOpponentBattleMap } from '../../Utils/Utils'
 import Grid from '../../Components/GameComponents/Grid/GameGrid'
-import Square from '../../Components/GameComponents/Square/GameSquare'
 import './Game.css'
 
 export default function Game() {
@@ -45,12 +43,21 @@ export default function Game() {
     })
   }
 
+  const shoot = async (coordinates) => {
+    let shot = {
+      coordinates: coordinates,
+      playerId: userId,
+      gameId: gameId,
+    }
+    setBattleMaps(await sendShot(shot))
+  }
+
   return (
     <div className="Game">
       <h1>{gameId}</h1>
       <div className="Map">
         <Grid battleMap={userBattleMap} opponent={false} />
-        <Grid battleMap={opponentBattleMap} opponent={true} />
+        <Grid battleMap={opponentBattleMap} opponent={true} shoot={shoot} />
       </div>
     </div>
   )

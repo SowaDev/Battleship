@@ -99,3 +99,17 @@ export const fetchGame = async () => {
     console.error(e)
   }
 }
+
+export const sendShot = async (shot) => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: baseUrl + 'shoot',
+      data: shot,
+      withCredentials: true,
+    })
+    return response.data
+  } catch (e) {
+    console.error(e)
+  }
+}
