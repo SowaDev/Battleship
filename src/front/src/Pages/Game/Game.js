@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import SockJsClient from 'react-stomp'
 import { fetchGame } from '../../Utils/BattleshipAPI'
 import { createOpponentBattleMap } from '../../Utils/Utils'
 import Grid from '../../Components/GameComponents/Grid/GameGrid'
@@ -18,23 +19,20 @@ export default function Game() {
   useEffect(() => {
     fetchGame().then((game) => {
       setGameId(game.gameId)
-      setUserBattleMap(
-        game.players.find((user) => user && user.playerId === userId).grid
-          .battleMap
-      )
-      if (game.gameStatus === 'NEW') {
-        setOpponentBattleMap(createOpponentBattleMap())
-      } else {
-        let opponentBattleMap = game.players.find(
-          (user) => user && user.playerId !== userId
-        ).grid.battleMap
-        setOpponentBattleMap(mountOpponentBattleMap(opponentBattleMap))
-      }
+      setBattleMaps(game)
     })
   }, [])
 
+  const setBattleMaps = (game) => {
+    game.players.forEach((user) => {
+      if (!user) setOpponentBattleMap(createOpponentBattleMap())
+      else if (user.playerId === userId) setUserBattleMap(user.grid.battleMap)
+      else if (user.playerId !== userId) mountOpponentBattleMap(user.grid)
+    })
+  }
+
   const mountOpponentBattleMap = (grid) => {
-    return grid.map((row) => {
+    return grid.battleMap.map((row) => {
       return row.map((square) => {
         return {
           coordinates: {
