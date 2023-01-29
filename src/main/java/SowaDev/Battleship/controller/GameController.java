@@ -4,6 +4,9 @@ import SowaDev.Battleship.service.BattleshipService;
 import SowaDev.Battleship.service.GameService;
 import SowaDev.Battleship.service.ShipPlacingService;
 import SowaDev.Battleship.model.*;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -79,7 +82,8 @@ public class GameController {
     @PostMapping("/shoot")
     public Game shoot(@RequestBody Shot shot){
         Game game = battleshipService.playerMove(shot);
-        simpMessagingTemplate.convertAndSend("/topic/game-progress" + shot.getGameId(), game);
+        String gameJson = battleshipService.convertToJson(game);
+        simpMessagingTemplate.convertAndSend("/topic/game/" + shot.getGameId(), gameJson);
         return game;
     }
 }
