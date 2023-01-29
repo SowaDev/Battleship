@@ -10,9 +10,7 @@ import java.util.UUID;
 @Setter
 public class Player {
     private String name;
-//    private UUID playerId;
     private String playerId;
-//    private Fleet fleet;
     private List<Ship> fleet;
     private Grid grid;
 
