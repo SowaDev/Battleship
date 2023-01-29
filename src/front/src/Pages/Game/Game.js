@@ -4,28 +4,37 @@ import { fetchGame, sendShot } from '../../Utils/BattleshipAPI'
 import { createOpponentBattleMap } from '../../Utils/Utils'
 import Grid from '../../Components/GameComponents/Grid/GameGrid'
 import './Game.css'
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
 
 export default function Game() {
   const { state } = useLocation()
-  const { userId, userName } = state
+  const { userId, userName, gameId } = state
   const [userBattleMap, setUserBattleMap] = useState([])
   const [opponentBattleMap, setOpponentBattleMap] = useState([])
   const [opponentName, setOpponentName] = useState('')
   const [gameStatus, setGameStatus] = useState('')
-  const [gameId, setGameId] = useState('')
 
   useEffect(() => {
     fetchGame().then((game) => {
-      setGameId(game.gameId)
+      const socket = new SockJS('http://localhost:8080/ws-game')
+      const stompClient = Stomp.over(socket)
+      stompClient.connect({}, (frame) => {
+        console.log('Connected: ' + frame)
+        stompClient.subscribe(`/topic/game/${gameId}`, (gamex) => {
+          setBattleMaps(JSON.parse(gamex.body))
+        })
+      })
       setBattleMaps(game)
     })
-  }, [])
+  }, [gameId])
 
   const setBattleMaps = (game) => {
     game.players.forEach((user) => {
       if (!user) setOpponentBattleMap(createOpponentBattleMap())
       else if (user.playerId === userId) setUserBattleMap(user.grid.battleMap)
-      else if (user.playerId !== userId) mountOpponentBattleMap(user.grid)
+      else if (user.playerId !== userId)
+        setOpponentBattleMap(mountOpponentBattleMap(user.grid))
     })
   }
 
@@ -33,10 +42,7 @@ export default function Game() {
     return grid.battleMap.map((row) => {
       return row.map((square) => {
         return {
-          coordinates: {
-            x: square.coordinates.x,
-            y: square.coordinates.y,
-          },
+          coordinates: square.coordinates,
           status: square.status,
         }
       })
@@ -49,7 +55,7 @@ export default function Game() {
       playerId: userId,
       gameId: gameId,
     }
-    setBattleMaps(await sendShot(shot))
+    await sendShot(shot)
   }
 
   return (

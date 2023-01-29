@@ -7,6 +7,7 @@ export default function ButtonLink({
   fleetReady,
   userName,
   userId,
+  gameId,
   updateHint,
 }) {
   const navigate = useNavigate()
@@ -27,11 +28,12 @@ export default function ButtonLink({
 
   const handleClick = async () => {
     if (fleetReady && userName !== '') {
-      await play(userName)
+      let game = await play(userName)
       navigate('/game', {
         state: {
           userId: userId,
           userName: userName,
+          gameId: game.gameId,
         },
       })
     } else if (fleetReady && userName === '')
