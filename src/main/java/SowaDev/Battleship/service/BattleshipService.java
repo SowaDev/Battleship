@@ -2,6 +2,8 @@ package SowaDev.Battleship.service;
 
 import SowaDev.Battleship.model.*;
 import SowaDev.Battleship.storage.GameStorage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -14,6 +16,15 @@ public class BattleshipService {
         if(!GameStorage.getInstance().getGames().containsKey(gameId))
             throw new NoSuchElementException("Game not found");
         return GameStorage.getInstance().getGames().get(gameId);
+    }
+
+    public String convertToJson(Game game){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(game);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Game playerMove(Shot shot) {
