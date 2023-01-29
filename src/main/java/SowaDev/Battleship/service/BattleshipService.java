@@ -61,7 +61,7 @@ public class BattleshipService {
             throw new RuntimeException("Game hasn't started yet. Still waiting for 2nd player");
         if(game.getGameStatus().equals(GameStatus.FINISHED))
             throw new RuntimeException("Game is finished");
-        if(game.getPlayerTurn().equals(playerId))
+        if(!game.getPlayerTurn().equals(playerId))
             throw new RuntimeException("It's not your turn");
     }
 
