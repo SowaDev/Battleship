@@ -79,4 +79,11 @@ public class BattleshipService {
         }
         return true;
     }
+
+    public void addMessage(Message message) {
+        Game game = getGame(message.getGameId());
+        Message messageWithDate = new Message(message.getSenderName(), message.getSenderId(),
+                message.getText(), message.getGameId());
+        game.getMessageList().add(messageWithDate);
+    }
 }
