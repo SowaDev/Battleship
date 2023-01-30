@@ -13,11 +13,14 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("ws-game").setAllowedOrigins("http://localhost:3000").withSockJS();
+        registry.addEndpoint("ws-game")
+                .setAllowedOrigins("http://localhost:3000")
+                .withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/app").enableSimpleBroker("/topic");
+        registry.setApplicationDestinationPrefixes("/app")
+                .enableSimpleBroker("/game", "/chat");
     }
 }
