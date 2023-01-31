@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { fetchGame, sendShot } from '../../Utils/BattleshipAPI'
 import { createOpponentBattleMap } from '../../Utils/Utils'
@@ -6,6 +6,7 @@ import Grid from '../../Components/GameComponents/Grid/GameGrid'
 import './Game.css'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
+import Chat from '../../Components/GameComponents/Chat/Chat'
 
 export default function Game() {
   const { state } = useLocation()
@@ -14,18 +15,19 @@ export default function Game() {
   const [opponentBattleMap, setOpponentBattleMap] = useState([])
   const [opponentName, setOpponentName] = useState('')
   const [gameStatus, setGameStatus] = useState('')
+  const [messageList, setMessageList] = useState([])
 
   useEffect(() => {
     fetchGame().then((game) => {
       const socket = new SockJS('http://localhost:8080/ws-game')
       const stompClient = Stomp.over(socket)
       stompClient.connect({}, (frame) => {
-        console.log('Connected: ' + frame)
-        stompClient.subscribe(`/topic/game/${gameId}`, (gamex) => {
+        stompClient.subscribe(`/game/${gameId}`, (gamex) => {
           setBattleMaps(JSON.parse(gamex.body))
         })
       })
       setBattleMaps(game)
+      setMessageList(game.messageList)
     })
   }, [gameId])
 
@@ -59,11 +61,19 @@ export default function Game() {
   }
 
   return (
-    <div className="Game">
-      <h1>{gameId}</h1>
-      <div className="Map">
-        <Grid battleMap={userBattleMap} opponent={false} />
-        <Grid battleMap={opponentBattleMap} opponent={true} shoot={shoot} />
+    <div className="GamePage">
+      <div className="Game">
+        <div className="Map">
+          <Grid battleMap={userBattleMap} opponent={false} />
+          <Chat
+            gameId={gameId}
+            userId={userId}
+            userName={userName}
+            messageList={messageList}
+            setMessageList={setMessageList}
+          />
+          <Grid battleMap={opponentBattleMap} opponent={true} shoot={shoot} />
+        </div>
       </div>
     </div>
   )
