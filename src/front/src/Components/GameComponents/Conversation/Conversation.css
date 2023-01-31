@@ -1,0 +1,12 @@
+.Conversation {
+  height: 25vw;
+  width: 20vw;
+  background-color: rgb(131, 205, 207, 0.2);
+  border: 1px solid black;
+  padding: 5%;
+}
+
+.MessageList {
+  height: 100%;
+  overflow: scroll;
+}

@@ -1,0 +1,25 @@
+.Chat {
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+  height: 30vw;
+}
+
+.InputBar {
+  width: 20vw;
+  display: flex;
+  justify-content: safe;
+}
+
+.Input-message {
+  width: 17vw;
+  background-color: rgba(255, 255, 255, 0.6);
+  /* border: 1px black; */
+}
+
+.SendButton {
+  background-color: rgba(230, 202, 50, 1);
+  width: 3vw;
+  height: 2vw;
+  border-collapse: collapse;
+}

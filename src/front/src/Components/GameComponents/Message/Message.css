@@ -1,0 +1,22 @@
+.Message {
+  overflow-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  /* max-width: 80%; */
+}
+
+.Sender {
+  font-size: 0.7rem;
+}
+
+.Text {
+  /* font-size: 1.5rem; */
+  width: 100%;
+  border-radius: 10px;
+  padding: 5px;
+  max-width: max-content;
+}
+
+.Content {
+  max-width: 80%;
+}
