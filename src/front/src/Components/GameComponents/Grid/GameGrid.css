@@ -6,16 +6,7 @@
 }
 
 .GameGrid {
-  padding-bottom: 20%;
-  height: 0%;
   border: 1px solid black;
   box-shadow: 4px 8px 20px 5px rgba(0, 0, 0, 0.25);
-  width: 20%;
-  position: relative;
-}
-
-.GameBattleMap {
-  position: absolute;
-  height: 100%;
-  width: 100%;
+  aspect-ratio: 1 / 1;
 }
