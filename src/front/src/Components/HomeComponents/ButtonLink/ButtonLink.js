@@ -7,7 +7,6 @@ export default function ButtonLink({
   fleetReady,
   userName,
   userId,
-  gameId,
   updateHint,
 }) {
   const navigate = useNavigate()
