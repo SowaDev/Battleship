@@ -4,8 +4,6 @@ import SowaDev.Battleship.service.BattleshipService;
 import SowaDev.Battleship.service.GameService;
 import SowaDev.Battleship.service.ShipPlacingService;
 import SowaDev.Battleship.model.*;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +18,8 @@ public class GameController {
     private final GameService gameService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-//    @Autowired
-//    private Grid grid;
-
-    public GameController(ShipPlacingService shipPlacingService, BattleshipService battleshipService, GameService gameService, SimpMessagingTemplate simpMessagingTemplate) {
+    public GameController(ShipPlacingService shipPlacingService, BattleshipService battleshipService,
+                          GameService gameService, SimpMessagingTemplate simpMessagingTemplate) {
         this.shipPlacingService = shipPlacingService;
         this.battleshipService = battleshipService;
         this.gameService = gameService;
@@ -43,7 +39,6 @@ public class GameController {
     @PutMapping
     public PlacementResponse placeShip(@RequestBody ShipPlacement shipPlacement,
                             @ModelAttribute("player") Player player){
-        //        model.addAttribute("player", player);
         return shipPlacingService.placeShip(player, shipPlacement);
     }
 
@@ -83,12 +78,5 @@ public class GameController {
         String gameJson = battleshipService.convertToJson(game);
         simpMessagingTemplate.convertAndSend("/game/" + shot.getGameId(), gameJson);
         return game;
-    }
-
-    @MessageMapping("/message")
-    public Message receiveChatMessage(@Payload Message message){
-        simpMessagingTemplate.convertAndSend("/chat/" + message.getGameId(), message);
-        battleshipService.addMessage(message);
-        return message;
     }
 }
