@@ -26,6 +26,7 @@ h1 {
   background-image: url('background4_enlarged.jpg');
   background-repeat: no-repeat;
   background-position: center;
+  background-size: cover;
 }
 
 .Center {
