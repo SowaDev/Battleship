@@ -1,12 +1,13 @@
 import axios from 'axios'
 
 const baseUrl = 'http://localhost:8080/'
+let cacheBustingParameter = new Date().getTime()
 
 export const fetchUser = async (url) => {
   try {
     const response = await axios({
       method: 'get',
-      url: url,
+      url: `${url}?cb=${cacheBustingParameter}`,
       withCredentials: true,
     })
     return response.data
@@ -91,7 +92,7 @@ export const fetchGame = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: baseUrl + 'game',
+      url: `${baseUrl}game?cb=${cacheBustingParameter}`,
       withCredentials: true,
     })
     return response.data
