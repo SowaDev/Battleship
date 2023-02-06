@@ -7,9 +7,7 @@ import SowaDev.Battleship.model.Ship;
 import SowaDev.Battleship.storage.GameStorage;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class GameService {
@@ -20,22 +18,39 @@ public class GameService {
         return game;
     }
 
-    public Game play(Player player, String name) {
+    public Game checkForOngoingGame(Player player) {
+        return GameStorage.getInstance().getGames().values().stream()
+                .filter(g -> !g.getGameStatus().equals(GameStatus.FINISHED))
+                .filter(g -> Arrays.stream(g.getPlayers())
+                        .filter(Objects::nonNull)
+                        .anyMatch(p -> p.getPlayerId().equals(player.getPlayerId())))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Player setPlayerName(Player player, String name) {
         player.setName(name);
+        return player;
+    }
+
+    public Game play(Player player) {
+        Game game = checkForOngoingGame(player);
+        if (game != null)
+            return game;
         if(!areAllShipsSetSail(player))
             throw new IllegalStateException("You didn't put out all of the ships");
         Optional<Game> optionalGame = GameStorage.getInstance().getGames().values().stream()
                 .filter(g -> g.getGameStatus().equals(GameStatus.NEW))
                 .findFirst();
-        Game game;
-        if(optionalGame.isPresent()) {
+        if(optionalGame.isPresent()){
             game = optionalGame.get();
             Player[] players = game.getPlayers();
             players[1] = player;
             game.setPlayers(players);
             game.setGameStatus(GameStatus.IN_PROGRESS);
             game.setPlayerTurn(setRandomStarter(game.getPlayers()[0].getPlayerId(), game.getPlayers()[1].getPlayerId()));
-        } else
+        }
+        else
             game = createGame(player);
         return game;
     }
