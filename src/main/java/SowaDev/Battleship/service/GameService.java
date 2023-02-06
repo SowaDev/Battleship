@@ -42,16 +42,19 @@ public class GameService {
         Optional<Game> optionalGame = GameStorage.getInstance().getGames().values().stream()
                 .filter(g -> g.getGameStatus().equals(GameStatus.NEW))
                 .findFirst();
-        if(optionalGame.isPresent()){
-            game = optionalGame.get();
-            Player[] players = game.getPlayers();
-            players[1] = player;
-            game.setPlayers(players);
-            game.setGameStatus(GameStatus.IN_PROGRESS);
-            game.setPlayerTurn(setRandomStarter(game.getPlayers()[0].getPlayerId(), game.getPlayers()[1].getPlayerId()));
-        }
+        if(optionalGame.isPresent())
+            game = joinGame(optionalGame.get(), player);
         else
             game = createGame(player);
+        return game;
+    }
+
+    public Game joinGame(Game game, Player player){
+        Player[] players = game.getPlayers();
+        players[1] = player;
+        game.setPlayers(players);
+        game.setGameStatus(GameStatus.IN_PROGRESS);
+        game.setPlayerTurn(setRandomStarter(game.getPlayers()[0].getPlayerId(),game.getPlayers()[1].getPlayerId()));
         return game;
     }
 
