@@ -9,7 +9,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@SessionAttributes({"player", "game"})
+@SessionAttributes("player")
 @RestController
 @RequestMapping("/game")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
@@ -26,8 +26,7 @@ public class BattleshipController {
     }
 
     @GetMapping
-    public Game getGame(Model model){
-        Player player = (Player) model.getAttribute("player");
+    public Game getGame(@SessionAttribute Player player){
         return gameService.play(player);
     }
 
