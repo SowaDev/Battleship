@@ -1,7 +1,7 @@
 .Conversation {
   height: 25vw;
   width: 20vw;
-  background-color: rgb(131, 205, 207, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   border: 1px solid black;
   padding: 5%;
 }
