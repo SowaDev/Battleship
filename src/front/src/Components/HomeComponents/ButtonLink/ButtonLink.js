@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { play } from '../../../Utils/BattleshipAPI'
+import { setUserName } from '../../../Utils/BattleshipAPI'
 import './ButtonLink.css'
 
 export default function ButtonLink({
@@ -27,23 +27,25 @@ export default function ButtonLink({
 
   const handleClick = async () => {
     if (fleetReady && userName !== '') {
-      let game = await play(userName)
+      await setUserName(userName)
       navigate('/game', {
         state: {
           userId: userId,
           userName: userName,
-          gameId: game.gameId,
         },
       })
     } else if (fleetReady && userName === '')
       updateHint('Before the game begins please enter your name')
+    else updateHint('To begin the game please put all of your ships on the map')
   }
 
   return (
     <button
       className="Play"
+      data-testid="play-button"
       style={{
-        backgroundColor: fleetReady ? 'lightseagreen' : 'gray',
+        backgroundColor:
+          fleetReady && userName !== '' ? 'lightseagreen' : 'gray',
       }}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
