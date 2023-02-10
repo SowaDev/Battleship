@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import {
   fetchUser,
   randomPlacement,
   removeShips,
 } from '../../Utils/BattleshipAPI'
 import { checkFleetReady } from '../../Utils/Utils'
+import { ColorContext } from '../../ColorContext'
 import './Home.css'
 import NameBar from '../../Components/HomeComponents/NameBar/NameBar'
 import Grid from '../../Components/HomeComponents/Grid/HomeGrid.js'
@@ -39,14 +40,14 @@ function Home() {
     setFleetReady(checkFleetReady(fleet))
   }, [fleet])
 
+  const { gray, golden } = useContext(ColorContext)
+
   const mountBattleMap = (grid) => {
     setBattleMap(
       grid.battleMap.map((row) => {
         return row.map((square) => ({
           ...square,
-          color: square.ship
-            ? 'rgba(230, 202, 50, 0.8)'
-            : 'rgba(51, 71, 80, 0.1)',
+          color: square.ship ? golden : gray,
         }))
       })
     )

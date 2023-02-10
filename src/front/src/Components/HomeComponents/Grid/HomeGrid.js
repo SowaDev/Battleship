@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { ColorContext } from '../../../ColorContext'
 import Square from '../Square/HomeSquare'
 import './HomeGrid.css'
 import { removeShip } from '../../../Utils/BattleshipAPI'
@@ -13,6 +14,8 @@ export default function Grid({
   mountBattleMap,
   updateHint,
 }) {
+  const { golden, red, transparentGray } = useContext(ColorContext)
+
   const colorSquares = (x, y, length, isVertical) => {
     let newBattleMap = [...battleMap]
     for (let i = 0; i < length; i++) {
@@ -20,9 +23,9 @@ export default function Grid({
       let square = isVertical ? newBattleMap[x + i][y] : newBattleMap[x][y + i]
       const outOfBounds =
         (isVertical && x + length > 10) || (!isVertical && y + length > 10)
-      if (outOfBounds && isThereAShip(x, y, length, isVertical))
-        square.color = 'rgba(217, 67, 48, 0.8)'
-      else square.color = 'rgba(230, 202, 50, 0.8)'
+      if (outOfBounds || isThereAShip(x, y, length, isVertical))
+        square.color = red
+      else square.color = golden
     }
     setBattleMap(newBattleMap)
   }
@@ -42,8 +45,8 @@ export default function Grid({
     for (let i = 0; i < length; i++) {
       if ((vertical && x + i > 9) || (!vertical && y + i > 9)) break
       let square = vertical ? newBattleMap[x + i][y] : newBattleMap[x][y + i]
-      if (square.ship) square.color = 'rgba(230, 202, 50, 0.8)'
-      else square.color = 'rgba(51, 71, 80, 0.1)'
+      if (square.ship) square.color = golden
+      else square.color = transparentGray
     }
     setBattleMap(newBattleMap)
   }

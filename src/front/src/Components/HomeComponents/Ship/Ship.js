@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { ColorContext } from '../../../ColorContext'
 import './Ship.css'
 
 export default function Ship({ ship, setSail, moveShip, selectedShip }) {
@@ -7,6 +8,8 @@ export default function Ship({ ship, setSail, moveShip, selectedShip }) {
   const handleClick = () => {
     moveShip(ship)
   }
+
+  const { red, oceanBlue, golden } = useContext(ColorContext)
 
   return (
     <button
@@ -18,7 +21,7 @@ export default function Ship({ ship, setSail, moveShip, selectedShip }) {
         minWidth: minSize * length,
         visibility: setSail ? 'hidden' : 'visible',
         backgroundColor:
-          selectedShip === ship ? 'indianred' : 'rgba(230, 202, 50, 0.8)',
+          selectedShip === ship ? oceanBlue : 'rgba(230, 202, 50, 0.8)',
       }}
     >
       {name}
