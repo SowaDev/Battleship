@@ -93,6 +93,7 @@ export const fetchGame = async () => {
     const response = await axios({
       method: 'get',
       url: `${baseUrl}game?cb=${cacheBustingParameter}`,
+      // url: baseUrl + 'game',
       withCredentials: true,
     })
     return response.data
@@ -105,8 +106,25 @@ export const sendShot = async (shot) => {
   try {
     const response = await axios({
       method: 'post',
-      url: baseUrl + 'shoot',
+      url: baseUrl + 'game/shoot',
       data: shot,
+      withCredentials: true,
+    })
+    return response.data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export const setUserName = async (name) => {
+  try {
+    const response = await axios({
+      // headers: {
+      //   'Content-Type': 'application/json',
+      // },
+      method: 'post',
+      url: baseUrl + 'username',
+      data: name,
       withCredentials: true,
     })
     return response.data
