@@ -10,7 +10,8 @@ import Chat from '../../Components/GameComponents/Chat/Chat'
 
 export default function Game() {
   const { state } = useLocation()
-  const { userId, userName, gameId } = state
+  const { userId, userName } = state
+  const [gameId, setGameId] = useState('')
   const [userBattleMap, setUserBattleMap] = useState([])
   const [opponentBattleMap, setOpponentBattleMap] = useState([])
   const [opponentName, setOpponentName] = useState('')
@@ -22,14 +23,15 @@ export default function Game() {
       const socket = new SockJS('http://localhost:8080/ws-game')
       const stompClient = Stomp.over(socket)
       stompClient.connect({}, (frame) => {
-        stompClient.subscribe(`/game/${gameId}`, (gamex) => {
+        stompClient.subscribe(`/game/${game.gameId}`, (gamex) => {
           setBattleMaps(JSON.parse(gamex.body))
         })
       })
+      setGameId(game.gameId)
       setBattleMaps(game)
       setMessageList(game.messageList)
     })
-  }, [gameId])
+  }, [])
 
   const setBattleMaps = (game) => {
     game.players.forEach((user) => {
