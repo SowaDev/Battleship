@@ -9,7 +9,7 @@ export default function Ship({ ship, setSail, moveShip, selectedShip }) {
     moveShip(ship)
   }
 
-  const { red, oceanBlue, golden } = useContext(ColorContext)
+  const { oceanBlue, golden } = useContext(ColorContext)
 
   return (
     <button
@@ -20,8 +20,7 @@ export default function Ship({ ship, setSail, moveShip, selectedShip }) {
         width: `${length * 3}vw`,
         minWidth: minSize * length,
         visibility: setSail ? 'hidden' : 'visible',
-        backgroundColor:
-          selectedShip === ship ? oceanBlue : 'rgba(230, 202, 50, 0.8)',
+        backgroundColor: selectedShip === ship ? oceanBlue : golden,
       }}
     >
       {name}
