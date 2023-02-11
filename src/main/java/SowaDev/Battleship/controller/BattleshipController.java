@@ -26,7 +26,7 @@ public class BattleshipController {
     }
 
     @GetMapping
-    public Game getGame(@SessionAttribute Player player){
+    public Game getGame(@ModelAttribute Player player){
         return gameService.play(player);
     }
 
