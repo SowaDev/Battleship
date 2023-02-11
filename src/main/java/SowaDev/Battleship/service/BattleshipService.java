@@ -47,13 +47,19 @@ public class BattleshipService {
         if(!square.getStatus().equals(SquareStatus.NOT_SHOT))
             throw new IllegalStateException("You've already shot here");
         if(square.getShip() != null) {
-            square.getShip().setLife(square.getShip().getLife() - 1);
+            hitTheShip(square.getShip());
             square.setStatus(SquareStatus.HIT);
             checkWinningConditions(game, opponent);
         } else {
             square.setStatus(SquareStatus.MISS);
             game.setPlayerTurn(opponent.getPlayerId());
         }
+    }
+
+    public void hitTheShip(Ship ship){
+        ship.setLife(ship.getLife() - 1);
+        if(ship.getLife() == 0)
+            ship.setDestroyed(true);
     }
 
     public void checkIfCorrect(Game game, String playerId){
@@ -74,8 +80,9 @@ public class BattleshipService {
 
     public boolean isLost(Player player){
         for(Ship ship : player.getFleet()){
-            if(!ship.isDestroyed())
+            if(!ship.isDestroyed()){
                 return false;
+            }
         }
         return true;
     }
