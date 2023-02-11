@@ -7,6 +7,7 @@ import './Game.css'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 import Chat from '../../Components/GameComponents/Chat/Chat'
+import TurnBox from '../../Components/GameComponents/TurnBox/TurnBox'
 
 export default function Game() {
   const { state } = useLocation()
@@ -17,21 +18,33 @@ export default function Game() {
   const [opponentName, setOpponentName] = useState('')
   const [gameStatus, setGameStatus] = useState('')
   const [messageList, setMessageList] = useState([])
+  const [isUserTurn, setIsUserTurn] = useState(false)
 
   useEffect(() => {
     fetchGame().then((game) => {
       const socket = new SockJS('http://localhost:8080/ws-game')
       const stompClient = Stomp.over(socket)
       stompClient.connect({}, (frame) => {
-        stompClient.subscribe(`/game/${game.gameId}`, (gamex) => {
-          setBattleMaps(JSON.parse(gamex.body))
+        stompClient.subscribe(`/game/${game.gameId}`, (jsonGame) => {
+          const parsedGame = JSON.parse(jsonGame.body)
+          setMapTurnAndStatus(parsedGame)
         })
       })
       setGameId(game.gameId)
-      setBattleMaps(game)
       setMessageList(game.messageList)
+      setMapTurnAndStatus(game)
     })
   }, [])
+
+  const setMapTurnAndStatus = (game) => {
+    setBattleMaps(game)
+    isUserTurnNow(game.playerTurn)
+    setGameStatus(game.gameStatus)
+  }
+
+  const isUserTurnNow = (turnsPlayerId) => {
+    setIsUserTurn(userId === turnsPlayerId ? true : false)
+  }
 
   const setBattleMaps = (game) => {
     game.players.forEach((user) => {
@@ -67,13 +80,16 @@ export default function Game() {
       <div className="Game">
         <div className="Map">
           <Grid battleMap={userBattleMap} opponent={false} />
-          <Chat
-            gameId={gameId}
-            userId={userId}
-            userName={userName}
-            messageList={messageList}
-            setMessageList={setMessageList}
-          />
+          <div className="Center">
+            <TurnBox isUserTurn={isUserTurn} gameStatus={gameStatus} />
+            <Chat
+              gameId={gameId}
+              userId={userId}
+              userName={userName}
+              messageList={messageList}
+              setMessageList={setMessageList}
+            />
+          </div>
           <Grid battleMap={opponentBattleMap} opponent={true} shoot={shoot} />
         </div>
       </div>
