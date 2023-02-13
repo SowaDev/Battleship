@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import { ColorContext } from '../../../ColorContext'
+import { ColorContext } from '../../../Context/ColorContext'
 import './TurnBox.css'
 
 export default function TurnBox({ isUserTurn, gameStatus }) {

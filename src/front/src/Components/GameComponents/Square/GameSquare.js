@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { ColorContext } from '../../../ColorContext'
+import { ColorContext } from '../../../Context/ColorContext'
 import './GameSquare.css'
 
 export default function Square({

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ColorContext } from '../../../ColorContext'
+import { ColorContext } from '../../../Context/ColorContext'
 import './Ship.css'
 
 export default function Ship({ ship, setSail, moveShip, selectedShip }) {

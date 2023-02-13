@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ColorContext } from '../../../ColorContext'
+import { ColorContext } from '../../../Context/ColorContext'
 import Square from '../Square/HomeSquare'
 import './HomeGrid.css'
 import { removeShip } from '../../../Utils/BattleshipAPI'

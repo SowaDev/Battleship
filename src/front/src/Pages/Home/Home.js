@@ -5,7 +5,7 @@ import {
   removeShips,
 } from '../../Utils/BattleshipAPI'
 import { checkFleetReady } from '../../Utils/Utils'
-import { ColorContext } from '../../ColorContext'
+import { ColorContext } from '../../Context/ColorContext'
 import './Home.css'
 import NameBar from '../../Components/HomeComponents/NameBar/NameBar'
 import Grid from '../../Components/HomeComponents/Grid/HomeGrid.js'
