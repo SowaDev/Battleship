@@ -6,5 +6,6 @@ import lombok.Data;
 public class Shot {
     private Coordinates coordinates;
     private String playerId;
+    private String playerName;
     private String gameId;
 }
