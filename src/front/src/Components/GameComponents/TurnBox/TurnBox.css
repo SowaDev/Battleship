@@ -6,8 +6,7 @@
   line-height: 5vw;
   width: 20vw;
   height: 5vw;
-  background-color: rgba(0, 250, 112, 0.712);
-  /* color: rgba(245, 133, 133, 0.836); */
+  background-color: rgba(0, 0, 0, 0.2);
   margin-bottom: 5%;
   border: 1px black solid;
   transition: background-color 1000ms;
