@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { fetchGame, sendShot } from '../../Utils/BattleshipAPI'
+import { fetchGame } from '../../Utils/BattleshipAPI'
 import { createOpponentBattleMap } from '../../Utils/Utils'
 import './Game.css'
-import SockJS from 'sockjs-client'
-import Stomp from 'stompjs'
 import Chat from '../../Components/GameComponents/Chat/Chat'
 import TurnBox from '../../Components/GameComponents/TurnBox/TurnBox'
 import DescribedGrid from '../../Components/GameComponents/DescribedGrid/DescribedGrid'
+import CaptainsLog from '../../Components/GameComponents/CaptainsLog/CaptainsLog'
+import { useContext } from 'react'
+import { StompClientContext } from '../../Context/StompClientContext'
 
 export default function Game() {
   const { state } = useLocation()
@@ -15,26 +16,28 @@ export default function Game() {
   const [gameId, setGameId] = useState('')
   const [userBattleMap, setUserBattleMap] = useState([])
   const [opponentBattleMap, setOpponentBattleMap] = useState([])
-  const [opponentName, setOpponentName] = useState('')
   const [gameStatus, setGameStatus] = useState('')
   const [messageList, setMessageList] = useState([])
+  const [logList, setLogList] = useState([])
   const [isUserTurn, setIsUserTurn] = useState(false)
+
+  const stompClient = useContext(StompClientContext)
 
   useEffect(() => {
     fetchGame().then((game) => {
-      const socket = new SockJS('http://localhost:8080/ws-game')
-      const stompClient = Stomp.over(socket)
-      stompClient.connect({}, (frame) => {
+      if (stompClient) {
         stompClient.subscribe(`/game/${game.gameId}`, (jsonGame) => {
+          console.log(game.gameId)
           const parsedGame = JSON.parse(jsonGame.body)
           setMapTurnAndStatus(parsedGame)
         })
-      })
+      }
       setGameId(game.gameId)
       setMessageList(game.messageList)
+      setLogList(game.captainsLog)
       setMapTurnAndStatus(game)
     })
-  }, [])
+  }, [stompClient])
 
   const setMapTurnAndStatus = (game) => {
     setBattleMaps(game)
@@ -70,9 +73,10 @@ export default function Game() {
     let shot = {
       coordinates: coordinates,
       playerId: userId,
+      playerName: userName,
       gameId: gameId,
     }
-    await sendShot(shot)
+    stompClient.send('/app/shot', {}, JSON.stringify(shot))
   }
 
   return (

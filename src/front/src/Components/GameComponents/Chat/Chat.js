@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { StompClientContext } from '../../../Context/StompClientContext'
 import Conversation from '../Conversation/Conversation'
 import './Chat.css'
-import SockJS from 'sockjs-client'
-import Stomp from 'stompjs'
 
 export default function Chat({
   gameId,
@@ -12,20 +11,16 @@ export default function Chat({
   setMessageList,
 }) {
   const [text, setText] = useState('')
-  const socket = new SockJS('http://localhost:8080/ws-game')
-  const stompClient = Stomp.over(socket)
+  const stompClient = useContext(StompClientContext)
 
   useEffect(() => {
-    stompClient.connect({}, (frame) => {
+    if (stompClient) {
       stompClient.subscribe(`/chat/${gameId}`, (payload) => {
         let message = JSON.parse(payload.body)
         setMessageList((prev) => [...prev, message])
       })
-    })
-    return () => {
-      if (stompClient.connected) stompClient.disconnect()
     }
-  }, [gameId])
+  }, [gameId, stompClient, setMessageList])
 
   const handleChange = (e) => {
     e.preventDefault()
