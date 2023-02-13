@@ -49,7 +49,7 @@ public class Ship {
     }
 
     public class Submarine extends Ship{
-        private final static int LENGTH = 2;
+        private final static int LENGTH = 3;
         private final static String NAME = "Submarine";
         public Submarine(){
             super(NAME, LENGTH);
