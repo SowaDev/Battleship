@@ -18,17 +18,19 @@ public class WebSocketController {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
     @MessageMapping("/shot")
-    public Game receiveShot(@Payload Shot shot){
+    public void receiveShot(@Payload Shot shot){
         Game game = battleshipService.playerMove(shot);
         String gameJson = battleshipService.convertToJson(game);
+        String logJson = battleshipService.addLogEntry(game, shot);
+        simpMessagingTemplate.convertAndSend("/log/" + shot.getGameId(), logJson);
         simpMessagingTemplate.convertAndSend("/game/" + shot.getGameId(), gameJson);
-        return game;
+//        return game;
     }
 
     @MessageMapping("/message")
-    public Message receiveChatMessage(@Payload Message message){
+    public void receiveChatMessage(@Payload Message message){
         simpMessagingTemplate.convertAndSend("/chat/" + message.getGameId(), message);
         battleshipService.addMessage(message);
-        return message;
+//        return message;
     }
 }
