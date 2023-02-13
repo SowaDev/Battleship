@@ -2,12 +2,12 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { fetchGame, sendShot } from '../../Utils/BattleshipAPI'
 import { createOpponentBattleMap } from '../../Utils/Utils'
-import Grid from '../../Components/GameComponents/Grid/GameGrid'
 import './Game.css'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 import Chat from '../../Components/GameComponents/Chat/Chat'
 import TurnBox from '../../Components/GameComponents/TurnBox/TurnBox'
+import DescribedGrid from '../../Components/GameComponents/DescribedGrid/DescribedGrid'
 
 export default function Game() {
   const { state } = useLocation()
@@ -79,7 +79,7 @@ export default function Game() {
     <div className="GamePage">
       <div className="Game">
         <div className="Map">
-          <Grid battleMap={userBattleMap} opponent={false} />
+          <DescribedGrid battleMap={userBattleMap} opponent={false} />
           <div className="Center">
             <TurnBox isUserTurn={isUserTurn} gameStatus={gameStatus} />
             <Chat
@@ -90,7 +90,12 @@ export default function Game() {
               setMessageList={setMessageList}
             />
           </div>
-          <Grid battleMap={opponentBattleMap} opponent={true} shoot={shoot} />
+          <DescribedGrid
+            battleMap={opponentBattleMap}
+            opponent={true}
+            shoot={shoot}
+            isUserTurn={isUserTurn}
+          />
         </div>
       </div>
     </div>

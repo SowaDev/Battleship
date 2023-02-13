@@ -1,0 +1,34 @@
+.DescribedGrid {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+}
+.BoxWithLetters {
+  /* display: flex;
+  flex-direction: column; */
+}
+.DescriptionSquare {
+  border: 1px solid black;
+  height: 100%;
+  width: 100%;
+  /* font-size: 1.5vw; */
+  font-weight: 600;
+}
+.LettersRow {
+  display: flex;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin-bottom: -2px;
+}
+
+.NumbersColumn {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin-right: -2px;
+}
