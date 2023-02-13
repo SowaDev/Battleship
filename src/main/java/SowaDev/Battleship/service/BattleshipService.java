@@ -27,11 +27,25 @@ public class BattleshipService {
         }
     }
 
+    public String convertLogToJson(LogEntry logEntry){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(logEntry);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Square getSquare(Player player, Coordinates coordinates) {
+        int x = coordinates.getX(), y = coordinates.getY();
+        return player.getGrid().getBattleMap()[x][y];
+    }
+
     public Game playerMove(Shot shot) {
         Game game = getGame(shot.getGameId());
         checkIfCorrect(game, shot.getPlayerId());
         Player opponent = getOpponent(game, shot.getPlayerId());
-        Square square = opponent.getGrid().getBattleMap()[shot.getCoordinates().getX()][shot.getCoordinates().getY()];
+        Square square = getSquare(opponent, shot.getCoordinates());
         shoot(square, game, opponent);
         return game;
     }
@@ -92,5 +106,19 @@ public class BattleshipService {
         Message messageWithDate = new Message(message.getSenderName(), message.getSenderId(),
                 message.getText(), message.getGameId());
         game.getMessageList().add(messageWithDate);
+    }
+
+    public String addLogEntry(Game game, Shot shot) {
+        Player opponent = getOpponent(game, shot.getPlayerId());
+        SquareStatus shotResult = getSquare(opponent, shot.getCoordinates()).getStatus();
+        String sunkenShipName = "";
+        if(shotResult.equals(SquareStatus.HIT)) {
+            Ship ship = getSquare(opponent, shot.getCoordinates()).getShip();
+            sunkenShipName = ship.isDestroyed() ? ship.getName() : "";
+        }
+        LogEntry newEntry = new LogEntry(shot.getPlayerId(), shot.getPlayerName(),
+                shot.getCoordinates(), shotResult, sunkenShipName);
+        game.getCaptainsLog().add(newEntry);
+        return convertLogToJson(newEntry);
     }
 }
