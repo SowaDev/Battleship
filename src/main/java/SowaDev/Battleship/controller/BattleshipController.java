@@ -27,7 +27,10 @@ public class BattleshipController {
 
     @GetMapping
     public Game getGame(@ModelAttribute Player player){
-        return gameService.play(player);
+        Game game = gameService.play(player);
+        String gameJson = battleshipService.convertToJson(game);
+        simpMessagingTemplate.convertAndSend("/game/" + game.getGameId(), gameJson);
+        return game;
     }
 
     @PostMapping("/shoot")
