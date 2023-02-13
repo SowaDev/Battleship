@@ -2,7 +2,7 @@ import React from 'react'
 import Square from '../Square/GameSquare'
 import './GameGrid.css'
 
-export default function Grid({ battleMap, opponent, shoot }) {
+export default function Grid({ battleMap, opponent, shoot, isUserTurn }) {
   return (
     <div
       className="GameGrid"
@@ -23,6 +23,7 @@ export default function Grid({ battleMap, opponent, shoot }) {
                   ship={opponent ? null : square.ship}
                   opponent={opponent}
                   shoot={shoot}
+                  isUserTurn={isUserTurn}
                 />
               )
             })}

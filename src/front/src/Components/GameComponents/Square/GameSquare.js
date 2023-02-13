@@ -2,14 +2,21 @@ import React, { useState, useEffect, useContext } from 'react'
 import { ColorContext } from '../../../ColorContext'
 import './GameSquare.css'
 
-export default function Square({ coordinates, status, opponent, ship, shoot }) {
+export default function Square({
+  coordinates,
+  status,
+  opponent,
+  ship,
+  shoot,
+  isUserTurn,
+}) {
   const [color, setColor] = useState('')
-  const { hitRed, transparentBlack, oceanBlue, golden } =
+  const { hitRed, transparentBlack, oceanBlue, golden, transparentBlack1 } =
     useContext(ColorContext)
 
   useEffect(() => {
     if (status === 'NOT_SHOT' && ship) setColor(golden)
-    else if (status === 'NOT_SHOT') setColor(transparentBlack)
+    else if (status === 'NOT_SHOT') setColor(transparentBlack1)
     else if (status === 'MISS') setColor(oceanBlue)
     else if (status === 'HIT') setColor(hitRed)
   }, [status])
@@ -19,14 +26,14 @@ export default function Square({ coordinates, status, opponent, ship, shoot }) {
   }
 
   const handleMouseEnter = (e) => {
-    if (opponent && status === 'NOT_SHOT') {
+    if (isUserTurn && opponent && status === 'NOT_SHOT') {
       e.target.style.backgroundColor = golden
     }
   }
 
   const handleMouseLeave = (e) => {
-    if (opponent && status === 'NOT_SHOT') {
-      e.target.style.backgroundColor = transparentBlack
+    if (isUserTurn && opponent && status === 'NOT_SHOT') {
+      e.target.style.backgroundColor = transparentBlack1
     }
   }
 
