@@ -11,6 +11,7 @@ export default function NameBar({ name, changeName }) {
   return (
     <div className="NameBar">
       <input
+        className="nameInput"
         type="text"
         value={name}
         placeholder="Enter your name"

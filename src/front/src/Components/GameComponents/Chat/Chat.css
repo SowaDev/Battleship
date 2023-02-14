@@ -8,20 +8,25 @@
 
 .InputBar {
   width: 20vw;
+  height: 2vw;
   display: flex;
-  justify-content: safe;
+  /* justify-content: safe; */
 }
 
 .Input-message {
   width: 17vw;
-  background-color: rgba(255, 255, 255, 0.3);
+  height: 2vw;
   border: 1px solid black;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgb(230, 202, 50);
+  font-weight: bold;
+  font-size: large;
 }
 
 .SendButton {
   background-color: rgba(230, 202, 50, 1);
   width: 3vw;
   height: 2vw;
-  border-collapse: collapse;
   border: 1px solid black;
+  font-size: 0.8vw;
 }
