@@ -10,6 +10,7 @@ export default function StompClientProvider({ children }) {
   useEffect(() => {
     const socket = new SockJS('http://localhost:8080/ws-game')
     const client = Stomp.over(socket)
+    client.debug = function () {}
     client.connect({}, (frame) => setStompClient(client))
     return () => client.disconnect
   }, [])
