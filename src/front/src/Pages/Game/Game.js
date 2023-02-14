@@ -20,6 +20,7 @@ export default function Game() {
   const [messageList, setMessageList] = useState([])
   const [logList, setLogList] = useState([])
   const [isUserTurn, setIsUserTurn] = useState(false)
+  const [flashCounter, setFlashCounter] = useState(0)
 
   const stompClient = useContext(StompClientContext)
 
@@ -70,6 +71,10 @@ export default function Game() {
   }
 
   const shoot = async (coordinates) => {
+    if (!isUserTurn) {
+      setFlashCounter((prev) => prev + 1)
+      return
+    }
     let shot = {
       coordinates: coordinates,
       playerId: userId,
@@ -85,7 +90,11 @@ export default function Game() {
         <div className="Map">
           <DescribedGrid battleMap={userBattleMap} opponent={false} />
           <div className="Center">
-            <TurnBox isUserTurn={isUserTurn} gameStatus={gameStatus} />
+            <TurnBox
+              isUserTurn={isUserTurn}
+              gameStatus={gameStatus}
+              flashCounter={flashCounter}
+            />
             <Chat
               gameId={gameId}
               userId={userId}

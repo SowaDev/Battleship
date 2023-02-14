@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import { ColorContext } from '../../../Context/ColorContext'
 import './TurnBox.css'
 
-export default function TurnBox({ isUserTurn, gameStatus }) {
+export default function TurnBox({ isUserTurn, gameStatus, flashCounter }) {
   const [text, setText] = useState('')
 
   useEffect(() => {
@@ -11,9 +11,9 @@ export default function TurnBox({ isUserTurn, gameStatus }) {
 
   useEffect(() => {
     changeFontColor(isUserTurn)
-    if (gameStatus === 'IN_PROGRESS') flashWithColor(isUserTurn, 1000)
-    else if (gameStatus === 'FINISHED') flash3times(isUserTurn, 500)
-  }, [isUserTurn, gameStatus])
+    if (gameStatus === 'IN_PROGRESS') flashWithColor(1000)
+    else if (gameStatus === 'FINISHED') flash3times(500)
+  }, [isUserTurn, gameStatus, flashCounter])
 
   const { transparentBlack, goldenNotTrans } = useContext(ColorContext)
   const boxRef = useRef(null)
@@ -28,7 +28,7 @@ export default function TurnBox({ isUserTurn, gameStatus }) {
   const flash3times = async (ms) => {
     boxRef.current.style.transition = `background-color ${ms}ms`
     for (let i = 0; i < 3; i++) {
-      changeBackgroundColor(isUserTurn)
+      changeBackgroundColor()
       await new Promise((resolve) =>
         setTimeout(() => {
           boxRef.current.style.background = transparentBlack
@@ -40,7 +40,7 @@ export default function TurnBox({ isUserTurn, gameStatus }) {
   }
 
   const flashWithColor = async (ms) => {
-    changeBackgroundColor(isUserTurn)
+    changeBackgroundColor()
     setTimeout(() => {
       boxRef.current.style.background = transparentBlack
     }, ms)
