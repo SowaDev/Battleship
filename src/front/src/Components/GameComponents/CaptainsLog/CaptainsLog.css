@@ -1,0 +1,11 @@
+.CaptainsLog {
+  /* display: flex;
+  flex-direction: column; */
+  width: 20vw;
+  height: 10vw;
+  box-shadow: 4px 8px 20px 5px rgba(0, 0, 0, 0.25);
+  border: 1px solid black;
+  padding: 1vw;
+  margin-bottom: 5%;
+  background-color: rgba(0, 0, 0, 0.2);
+}

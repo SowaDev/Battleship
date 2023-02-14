@@ -27,3 +27,10 @@ html,
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.Left {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+}

@@ -1,0 +1,9 @@
+.LogList {
+  height: 100%;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.LogList::-webkit-scrollbar {
+  display: none;
+}

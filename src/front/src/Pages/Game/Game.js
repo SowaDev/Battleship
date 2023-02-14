@@ -28,7 +28,6 @@ export default function Game() {
     fetchGame().then((game) => {
       if (stompClient) {
         stompClient.subscribe(`/game/${game.gameId}`, (jsonGame) => {
-          console.log(game.gameId)
           const parsedGame = JSON.parse(jsonGame.body)
           setMapTurnAndStatus(parsedGame)
         })
@@ -88,7 +87,15 @@ export default function Game() {
     <div className="GamePage">
       <div className="Game">
         <div className="Map">
-          <DescribedGrid battleMap={userBattleMap} opponent={false} />
+          <div className="Left">
+            <CaptainsLog
+              logList={logList}
+              gameId={gameId}
+              setLogList={setLogList}
+              userId={userId}
+            />
+            <DescribedGrid battleMap={userBattleMap} opponent={false} />
+          </div>
           <div className="Center">
             <TurnBox
               isUserTurn={isUserTurn}
