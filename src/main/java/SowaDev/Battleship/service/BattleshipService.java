@@ -108,14 +108,19 @@ public class BattleshipService {
         game.getMessageList().add(messageWithDate);
     }
 
-    public String addLogEntry(Game game, Shot shot) {
-        Player opponent = getOpponent(game, shot.getPlayerId());
-        SquareStatus shotResult = getSquare(opponent, shot.getCoordinates()).getStatus();
+    public String getSunkenShipName(Player opponent, Shot shot, SquareStatus shotResult){
         String sunkenShipName = "";
         if(shotResult.equals(SquareStatus.HIT)) {
             Ship ship = getSquare(opponent, shot.getCoordinates()).getShip();
             sunkenShipName = ship.isDestroyed() ? ship.getName() : "";
         }
+        return sunkenShipName;
+    }
+
+    public String addLogEntry(Game game, Shot shot) {
+        Player opponent = getOpponent(game, shot.getPlayerId());
+        SquareStatus shotResult = getSquare(opponent, shot.getCoordinates()).getStatus();
+        String sunkenShipName = getSunkenShipName(opponent, shot, shotResult);
         LogEntry newEntry = new LogEntry(shot.getPlayerId(), shot.getPlayerName(),
                 shot.getCoordinates(), shotResult, sunkenShipName);
         game.getCaptainsLog().add(newEntry);

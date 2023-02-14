@@ -27,17 +27,21 @@ public class ShipPlacingService {
 
     public PlacementResponse placeShip(Player player, ShipPlacement shipPlacement) {
         Ship ship = player.getFleet().stream().
-                filter(boat -> boat.getName().equals(shipPlacement.getShipName())).findFirst().get();
+                filter(boat -> boat.getName().equals(shipPlacement.getShipName())).findFirst()
+                .orElseThrow();
         Grid grid = player.getGrid();
         String placementResult = isPossibleToPlaceShip(ship, grid, shipPlacement.getCoordinatesList());
-        if(placementResult.equals("ok")) {
-            if(ship.isSetSail())
-                markSquares(grid, null, ship.getPlacement(), true);
-            markSquares(grid, ship, shipPlacement.getCoordinatesList(), false);
-            ship.setSetSail(true);
-            ship.setPlacement(shipPlacement.getCoordinatesList());
-        }
+        if(placementResult.equals("ok"))
+            setSail(grid, ship, shipPlacement.getCoordinatesList());
         return new PlacementResponse(placementResult, grid);
+    }
+
+    public void setSail(Grid grid, Ship ship, List<Coordinates> coordinatesList){
+        if(ship.isSetSail())
+            markSquares(grid, null, ship.getPlacement());
+        markSquares(grid, ship, coordinatesList);
+        ship.setSetSail(true);
+        ship.setPlacement(coordinatesList);
     }
 
 
@@ -62,45 +66,53 @@ public class ShipPlacingService {
     public Grid removeShip(Player player, String shipName){
         Ship ship = player.getFleet().stream().filter(boat -> boat.getName().equals(shipName)).findFirst().get();
         Grid grid = player.getGrid();
-        markSquares(grid, null, ship.getPlacement(), true);
+        markSquares(grid, null, ship.getPlacement());
         ship.setPlacement(null);
         ship.setSetSail(false);
         return grid;
     }
 
-    public void markSquares(Grid grid, Ship ship, List<Coordinates> coordinatesList, boolean isBeingRemoved) {
+    public void markSquares(Grid grid, Ship ship, List<Coordinates> coordinatesList) {
         int startX = coordinatesList.get(0).getX(), startY = coordinatesList.get(0).getY(),
                 endX = coordinatesList.get(coordinatesList.size() - 1).getX(),
                 endY = coordinatesList.get(coordinatesList.size() - 1).getY();
-        for(int i = startX - 1; i <= endX + 1; i++) {
-            for (int j = startY - 1; j <= endY + 1; j++) {
-                if(i >= 0 && i < size && j >= 0 && j < size)
-                    grid.getBattleMap()[i][j].setRestricted(!isBeingRemoved);
-            }
-        }
+        markRestrictedArea(grid, ship, startX, startY, endX, endY);
         for(Coordinates coordinates : coordinatesList){
             grid.getBattleMap()[coordinates.getX()][coordinates.getY()].setShip(ship);
         }
     }
 
+    public void markRestrictedArea(Grid grid, Ship ship, int startX, int startY, int endX, int endY){
+        for(int i = startX - 1; i <= endX + 1; i++) {
+            for (int j = startY - 1; j <= endY + 1; j++) {
+                if(i >= 0 && i < size && j >= 0 && j < size)
+                    grid.getBattleMap()[i][j].setRestricted(ship != null);
+            }
+        }
+    }
+
     public Grid putShipsAtRandom(Player player) {
-        Random rand = new Random();
         if(areAllShipsSetSail(player))
             removeAllShips(player);
         for(Ship ship : player.getFleet()){
             while(!ship.isSetSail()){
                 ship.setPlacement(new ArrayList<>());
-                ship.setVertical(rand.nextBoolean());
-                int x = ship.isVertical() ? rand.nextInt(size - ship.getLength()) : rand.nextInt(size);
-                int y = ship.isVertical() ? rand.nextInt(size) : rand.nextInt(size - ship.getLength());
-                for(int i = 0; i < ship.getLength(); i++) {
-                    Coordinates newCoordinates = ship.isVertical() ? new Coordinates(x + i, y) : new Coordinates(x, y + i);
-                    ship.getPlacement().add(newCoordinates);
-                }
+                setRandomCoordinates(ship);
                 placeShip(player, new ShipPlacement(ship.getName(), ship.getPlacement()));
             }
         }
         return player.getGrid();
+    }
+
+    public void setRandomCoordinates(Ship ship){
+        Random rand = new Random();
+        ship.setVertical(rand.nextBoolean());
+        int x = ship.isVertical() ? rand.nextInt(size - ship.getLength()) : rand.nextInt(size);
+        int y = ship.isVertical() ? rand.nextInt(size) : rand.nextInt(size - ship.getLength());
+        for(int i = 0; i < ship.getLength(); i++) {
+            Coordinates newCoordinates = ship.isVertical() ? new Coordinates(x + i, y) : new Coordinates(x, y + i);
+            ship.getPlacement().add(newCoordinates);
+        }
     }
 
     public Grid removeAllShips(Player player){
@@ -108,7 +120,7 @@ public class ShipPlacingService {
         if(!areAllShipsSetSail(player))
             return grid;
         for(Ship ship : player.getFleet()){
-            markSquares(grid, null, ship.getPlacement(), true);
+            markSquares(grid, null, ship.getPlacement());
             ship.setPlacement(null);
             ship.setSetSail(false);
         }

@@ -33,20 +33,23 @@ public class GameService {
         return player;
     }
 
+    public Game findGameToJoin(){
+        return GameStorage.getInstance().getGames().values().stream()
+                .filter(g -> g.getGameStatus().equals(GameStatus.NEW))
+                .findFirst().orElse(null);
+    }
+
     public Game play(Player player) {
         Game game = checkForOngoingGame(player);
         if (game != null)
             return game;
         if(!areAllShipsSetSail(player))
             throw new IllegalStateException("You didn't put out all of the ships");
-        Optional<Game> optionalGame = GameStorage.getInstance().getGames().values().stream()
-                .filter(g -> g.getGameStatus().equals(GameStatus.NEW))
-                .findFirst();
-        if(optionalGame.isPresent())
-            game = joinGame(optionalGame.get(), player);
+        game = findGameToJoin();
+        if(game != null)
+            return joinGame(game, player);
         else
-            game = createGame(player);
-        return game;
+           return createGame(player);
     }
 
     public Game joinGame(Game game, Player player){
